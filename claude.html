@@ -683,7 +683,8 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     box-shadow: 4px 0 24px rgba(0,0,0,0.18);
     transition: transform 0.28s ease;
   }
-  #sidebar.open { transform: translateX(0); }
+  #sidebar.mobile-open { transform: translateX(0) !important; }
+  #sidebar.open { transform: translateX(0) !important; }
   #sidebar.collapsed { transform: translateX(-100%); }
   #main { margin-left: 0 !important; }
   .content-area { padding: 24px 20px 60px; }
@@ -932,7 +933,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 <!-- MAIN -->
 <main id="main">
   <div class="topbar">
-    <button class="topbar-toggle-btn" onclick="window.innerWidth <= 768 ? toggleMobileSidebar() : toggleSidebar()" title="Меню">☰</button>
+    <button class="topbar-toggle-btn" onclick="window.innerWidth <= 768 ? toggleMobileSidebar() : toggleSidebar()" title="Меню" style="touch-action:manipulation">☰</button>
     <div class="topbar-breadcrumb" id="breadcrumb"><span>Введение</span></div>
   </div>
 
@@ -2332,7 +2333,6 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 </main>
 
 <div id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
-<button class="menu-toggle" onclick="toggleMobileSidebar()">☰</button>
 
 <script>
 // ═══════════ BLOCK 1.1 MINI-QUIZ (personalized by addiction type) ═══════════
@@ -4156,12 +4156,18 @@ function collapseAllNavSections(except) { except = except || null;
 function toggleMobileSidebar() {
   const sidebar = document.getElementById('sidebar');
   const backdrop = document.getElementById('sidebar-backdrop');
-  const isOpen = sidebar.classList.toggle('open');
-  if (backdrop) backdrop.style.display = isOpen ? 'block' : 'none';
+  const isOpen = sidebar.classList.contains('mobile-open');
+  if (isOpen) {
+    sidebar.classList.remove('mobile-open');
+    if (backdrop) backdrop.style.display = 'none';
+  } else {
+    sidebar.classList.add('mobile-open');
+    if (backdrop) backdrop.style.display = 'block';
+  }
 }
 
 function closeMobileSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar').classList.remove('mobile-open');
   const backdrop = document.getElementById('sidebar-backdrop');
   if (backdrop) backdrop.style.display = 'none';
 }
