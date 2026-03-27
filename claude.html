@@ -642,15 +642,16 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
   display: none;
   align-items: center;
   justify-content: center;
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--surface2);
   cursor: pointer;
   color: var(--text-muted);
-  font-size: 16px;
+  font-size: 18px;
   flex-shrink: 0;
   transition: background 0.15s;
+  touch-action: manipulation;
 }
 .topbar-toggle-btn:hover { background: var(--border); }
 
@@ -728,9 +729,9 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 .mobile-video-hint {
   display: none;
   font-size: 13px;
-  color: var(--text-muted);
-  background: var(--primary-light);
-  border-left: 3px solid var(--primary);
+  color: var(--warning);
+  background: var(--warning-bg);
+  border-left: 3px solid var(--warning);
   padding: 8px 12px;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   margin-bottom: 12px;
@@ -931,7 +932,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 <!-- MAIN -->
 <main id="main">
   <div class="topbar">
-    <button class="topbar-toggle-btn" onclick="toggleSidebar()" title="Меню">☰</button>
+    <button class="topbar-toggle-btn" onclick="window.innerWidth <= 768 ? toggleMobileSidebar() : toggleSidebar()" title="Меню">☰</button>
     <div class="topbar-breadcrumb" id="breadcrumb"><span>Введение</span></div>
   </div>
 
@@ -1157,6 +1158,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
       <div class="card" style="margin-top:20px">
         <p class="prose">Посмотрите на диалог между Чарли и Эмилией из фильма «Брачная история» (2019), чтобы увидеть, как разрушается общение, если люди не умеют отличать факты от оценок и ярлыков.</p>
+        <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
         <div style="position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius-sm);margin-bottom:20px">
           <iframe src="https://drive.google.com/file/d/1lXjrNNHlG1y_T3hTsqlheMyHy-oy2bKv/preview" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay" allowfullscreen></iframe>
         </div>
@@ -1541,6 +1543,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
       <div class="card" style="margin-top:20px">
         <p class="prose">Вернемся к диалогу между Чарли и Эмилией из фильма «Брачная история» (2019), чтобы увидеть, как Я- и ТЫ-высказывания влияют на общение героев.</p>
+        <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
         <div style="position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius-sm);margin-bottom:20px">
           <iframe src="https://drive.google.com/file/d/1lXjrNNHlG1y_T3hTsqlheMyHy-oy2bKv/preview" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay" allowfullscreen></iframe>
         </div>
