@@ -671,7 +671,16 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 }
 
 @media (max-width: 768px) {
-  #sidebar { transform: translateX(-100%); width: var(--sidebar-width) !important; }
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100%;
+    z-index: 1000;
+    transform: translateX(-100%);
+    width: var(--sidebar-width) !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+    transition: transform 0.28s ease;
+  }
   #sidebar.open { transform: translateX(0); }
   #sidebar.collapsed { transform: translateX(-100%); }
   #main { margin-left: 0 !important; }
@@ -681,6 +690,21 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
   .cover-hero { padding: 28px; }
   .cover-hero h1 { font-size: 20px; }
   .topbar-toggle-btn { display: flex; }
+  /* Nav: show only section titles, no sub-items */
+  .nav-section-items { display: none !important; }
+  .nav-toggle-icon { display: none; }
+  .nav-section-title { cursor: pointer; }
+  /* Backdrop overlay */
+  #sidebar-backdrop { display: block; }
+}
+
+#sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+  cursor: pointer;
 }
 
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
@@ -805,7 +829,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
   <nav class="sidebar-nav">
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-intro')" id="toggle-intro">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-intro', 'b00')" id="toggle-intro">
         <span>Введение</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-intro">
@@ -816,7 +840,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-m1')" id="toggle-m1">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-m1', 'b11')" id="toggle-m1">
         <span>Модуль 1</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-m1">
@@ -828,7 +852,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-m2')" id="toggle-m2">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-m2', 'b21')" id="toggle-m2">
         <span>Модуль 2</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-m2">
@@ -841,7 +865,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-m3')" id="toggle-m3">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-m3', 'b31')" id="toggle-m3">
         <span>Модуль 3</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-m3">
@@ -852,7 +876,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-m4')" id="toggle-m4">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-m4', 'b41')" id="toggle-m4">
         <span>Модуль 4</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-m4">
@@ -863,7 +887,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-m5')" id="toggle-m5">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-m5', 'b51')" id="toggle-m5">
         <span>Модуль 5</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-m5">
@@ -874,7 +898,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-m6')" id="toggle-m6">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-m6', 'b61')" id="toggle-m6">
         <span>Модуль 6</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-m6">
@@ -885,7 +909,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title nav-section-toggle" onclick="toggleNavSection('nav-m7')" id="toggle-m7">
+      <div class="nav-section-title nav-section-toggle" onclick="handleNavSection('nav-m7', 'b71')" id="toggle-m7">
         <span>Финал</span><span class="nav-toggle-icon">›</span>
       </div>
       <div class="nav-section-items collapsed" id="nav-m7">
@@ -2300,7 +2324,8 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
   </div><!-- /content-area -->
 </main>
 
-<button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+<div id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+<button class="menu-toggle" onclick="toggleMobileSidebar()">☰</button>
 
 <script>
 // ═══════════ BLOCK 1.1 MINI-QUIZ (personalized by addiction type) ═══════════
@@ -4111,6 +4136,28 @@ function collapseAllNavSections(except) { except = except || null;
     if (items) items.classList.add('collapsed');
     if (toggle) toggle.classList.remove('open');
   });
+}
+
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const isOpen = sidebar.classList.toggle('open');
+  if (backdrop) backdrop.style.display = isOpen ? 'block' : 'none';
+}
+
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (backdrop) backdrop.style.display = 'none';
+}
+
+function handleNavSection(sectionId, firstBlock) {
+  if (window.innerWidth <= 768) {
+    goBlock(firstBlock);
+    closeMobileSidebar();
+  } else {
+    toggleNavSection(sectionId);
+  }
 }
 
 function toggleNavSection(sectionId) {
