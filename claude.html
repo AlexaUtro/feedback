@@ -354,7 +354,7 @@ body {
   cursor: pointer;
   transition: all 0.15s;
   background: var(--surface);
-  font-size: 14px;
+  font-size: 14px !important;
   line-height: 1.5;
 }
 .option-item:hover { border-color: var(--primary); background: var(--primary-light); }
@@ -659,15 +659,16 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
   display: none;
   position: fixed;
   bottom: 20px; right: 20px;
-  width: 48px; height: 48px;
+  width: 52px; height: 52px;
   border-radius: 50%;
   background: var(--primary);
   color: white;
   border: none;
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  z-index: 200;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  z-index: 998;
+  touch-action: manipulation;
 }
 
 @media (max-width: 768px) {
@@ -1269,12 +1270,14 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="revealB12Feedback()">Проверить ответы</button>
-        <button class="btn btn-primary" id="btn-b12" disabled onclick="goBlock('b13')">Далее →</button>
       </div>
 
       <div id="after-b12" style="display:none">
         <div class="feedback-box neutral" style="margin-top:20px">
           Отлично, вы прошли тренировку на различение факта, оценки и ярлыка. Если какие-то ответы были неверными — это нормально.<br><br>Наша задача — <strong>начать замечать</strong>, где в ваших фразах есть конкретные факты, а где обобщения.
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btn-b12" disabled onclick="goBlock('b13')">Далее →</button>
         </div>
       </div>
     </div>
@@ -1648,6 +1651,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       <h2 class="block-title">Распознаём «замаскированные» Я-высказывания</h2>
       <div class="prose">Иногда кажется, что если добавить «я чувствую», фраза автоматически становится мягкой и про чувства. Но часто дальше идёт не эмоция, а оценка другого. Потренируемся замечать разницу.</div>
 
+      <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
       <div class="card" style="padding:0;overflow:hidden">
         <div style="padding:16px 20px;font-weight:600;font-size:15px;border-bottom:1px solid var(--border)">Чувство или оценка о другом?</div>
         <table class="exercise-table" id="table-b25" style="table-layout:fixed;width:100%"><colgroup><col><col style="width:160px"><col></colgroup>
@@ -3011,7 +3015,15 @@ function updateBreadcrumb(id) {
     b21:'Модуль 2 · Введение', b22:'Модуль 2 · Чувство vs оценка',
     b23:'Модуль 2 · Я vs Ты', b24:'Модуль 2 · Конструктор',
     b25:'Модуль 2 · Маскированные Я-высказывания', b26:'Модуль 2 · Итог',
-    b71:'Финал · Повторная самооценка'
+    b71:'Финал · Повторная самооценка',
+    b31:'Модуль 3 · Трёхчастное высказывание', b32:'Модуль 3 · Учимся видеть структуру',
+    b33:'Модуль 3 · Конструктор 3-частных фраз', b34:'Модуль 3 · Итог',
+    b41:'Модуль 4 · Говорить о границах без угроз', b42:'Модуль 4 · Граница vs Угроза vs Жалоба',
+    b43:'Модуль 4 · Собираем 5-частное высказывание', b44:'Модуль 4 · Итог',
+    b51:'Модуль 5 · Реакции другого', b52:'Модуль 5 · Сдача, атака или позиция',
+    b53:'Модуль 5 · Мини-диалог', b54:'Модуль 5 · Итог',
+    b61:'Модуль 6 · Шпаргалка', b62:'Модуль 6 · Срывы договорённостей',
+    b63:'Модуль 6 · Финансы и долги', b64:'Модуль 6 · Агрессия и нападение'
   };
   document.getElementById('breadcrumb').innerHTML = `<span>${labels[id] || id}</span>`;
 }
