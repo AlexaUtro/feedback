@@ -674,7 +674,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
 @media (max-width: 768px) {
   #sidebar {
-    position: fixed;
+    position: fixed !important;
     top: 0; left: 0;
     height: 100%;
     z-index: 1000;
@@ -683,10 +683,15 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     box-shadow: 4px 0 24px rgba(0,0,0,0.18);
     transition: transform 0.28s ease;
   }
-  #sidebar.mobile-open { transform: translateX(0) !important; }
-  #main { margin-left: 0 !important; }
+  #sidebar.mobile-open {
+    transform: translateX(0) !important;
+  }
+  #main,
+  #main.sidebar-collapsed {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
   .content-area { padding: 24px 20px 60px; }
-  .menu-toggle { display: flex; align-items: center; justify-content: center; }
   .constructor-grid { grid-template-columns: 1fr; }
   .cover-hero { padding: 28px; }
   .cover-hero h1 { font-size: 20px; }
@@ -4003,14 +4008,16 @@ function initUI() {
     if (el) el.classList.add('done');
   });
 
-  // Restore sidebar collapsed state
+  // Restore sidebar collapsed state (desktop only)
   try {
-    const collapsed = localStorage.getItem('sidebar_collapsed');
-    if (collapsed === '1') {
-      document.getElementById('sidebar').classList.add('collapsed');
-      document.getElementById('main').classList.add('sidebar-collapsed');
-      const btn = document.getElementById('sidebar-toggle-btn');
-      if (btn) btn.textContent = '▶';
+    if (window.innerWidth > 768) {
+      const collapsed = localStorage.getItem('sidebar_collapsed');
+      if (collapsed === '1') {
+        document.getElementById('sidebar').classList.add('collapsed');
+        document.getElementById('main').classList.add('sidebar-collapsed');
+        const btn = document.getElementById('sidebar-toggle-btn');
+        if (btn) btn.textContent = '▶';
+      }
     }
   } catch(e) {}
 
