@@ -813,7 +813,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 <aside id="sidebar">
   <div class="sidebar-logo">
     <h1>Говорить так,<br>чтобы тебя услышали</h1>
-    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" onclick="toggleSidebar()" title="Свернуть меню">◀</button>
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" onclick="window.innerWidth <= 768 ? closeMobileSidebar() : toggleSidebar()" title="Свернуть меню">◀</button>
   </div>
 
   <!-- Collapsed icons strip (shown only when sidebar is collapsed) -->
