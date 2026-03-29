@@ -805,6 +805,106 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
   font-weight: 700;
   padding: 0 8px;
 }
+
+/* ═══════════════ EASTER EGGS ═══════════════ */
+.easter-trigger {
+  cursor: pointer;
+  border-bottom: 1px dashed var(--accent);
+  transition: color 0.2s;
+}
+.easter-trigger:hover { color: var(--accent); }
+
+.easter-popup {
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fdf6e3;
+  border: none;
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  max-width: 380px;
+  width: 90%;
+  z-index: 2000;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5a3e1b;
+  text-align: center;
+  cursor: pointer;
+}
+.easter-popup .easter-emoji { font-size: 36px; margin-bottom: 12px; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
+.easter-popup p { margin: 0; font-style: italic; }
+.easter-popup small { display: block; margin-top: 12px; font-size: 11px; color: #9a7040; font-style: normal; }
+
+.easter-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1999;
+  cursor: pointer;
+}
+
+/* Module 4 – glowing divider */
+.easter-divider {
+  height: 2px;
+  background: var(--border);
+  margin: 20px 0;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.4s, box-shadow 0.4s;
+  position: relative;
+}
+.easter-divider:hover, .easter-divider.glow {
+  background: #d4af37;
+  box-shadow: 0 0 12px rgba(212,175,55,0.7);
+}
+
+/* Module 5 – breathing circle */
+.breathing-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(20,30,50,0.92);
+  z-index: 2000;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 32px;
+  color: white;
+}
+.breathing-overlay.active { display: flex; }
+.breathing-circle {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #a8d5a2, #3a7d44);
+  animation: breathe 4s ease-in-out infinite;
+  margin-bottom: 48px;
+  flex-shrink: 0;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+.breathing-overlay p { font-size: 16px; line-height: 1.8; max-width: 340px; }
+.breathing-overlay small { margin-top: 20px; font-size: 12px; opacity: 0.5; }
+
+/* Module 7 – footer message */
+.easter-footer {
+  text-align: center;
+  padding: 40px 20px 20px;
+  font-size: 12px;
+  color: var(--border);
+  opacity: 0.4;
+  transition: opacity 0.6s, color 0.6s, font-size 0.3s;
+  line-height: 1.9;
+  font-style: italic;
+}
+.easter-footer:hover { opacity: 1; color: var(--text); font-size: 14px; }
+/* ══════════════════════════════════════════ */
 </style>
 </head>
 <body>
@@ -966,7 +1066,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         </ul>
       </div>
       <div class="card">
-        <p class="prose">Здесь мы не лечим зависимость, не даём гарантию, что зависимый изменится.<br><br>
+        <p class="prose">Здесь мы не лечим зависимость, не даём гарантию, что зависимый изменится. <span class="easter-trigger" onclick="showEaster('easter-m0')" title="Нажми на меня">🪄</span><br><br>
         Мы работаем с тем, <strong>как вы говорите о себе, своих чувствах и границах</strong> так, чтобы вам самой было легче выдерживать разговор.</p>
         <hr class="divider">
         <div class="question-block">
@@ -1110,7 +1210,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           <span>1. Факт</span><span class="accordion-icon">›</span>
         </div>
         <div class="accordion-body">
-          <p>Факт — это то, что можно увидеть и записать: кто, что сделал, где, когда, сколько.</p>
+          <p><span class="easter-trigger" onclick="showEaster('easter-m1')" title="Нажми на меня">📹 Факт</span> — это то, что можно увидеть и записать: кто, что сделал, где, когда, сколько.</p>
           <ul>
             <li>Есть конкретное действие и время/цифры;</li>
             <li>Нет обзывательств и «ты всегда/ты никогда»;</li>
@@ -1158,7 +1258,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         </div>
       </div>
 
-      <div class="card" style="margin-top:20px">
+      <div class="card" style="margin-top:20px;background:#ede8f5">
         <p class="prose">Посмотрите на диалог между Чарли и Эмилией из фильма «Брачная история» (2019), чтобы увидеть, как разрушается общение, если люди не умеют отличать факты от оценок и ярлыков.</p>
         <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
         <div style="position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius-sm);margin-bottom:20px">
@@ -1432,7 +1532,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
 
       <div class="card">
-        <p class="prose" style="margin-bottom:0">Частая ошибка — говорить в основном про другого («ты», «он», «они») и почти не замечать себя. Мы не запрещаем эмоции и обиду, мы учимся добавлять «Я»: «я злюсь», «мне больно», «мне страшно», «мне важно…».</p>
+        <p class="prose" style="margin-bottom:0">Частая ошибка — говорить в основном про другого («ты», «он», «они») и почти <span id="easter-m2-text" class="easter-trigger" onclick="triggerM2()" title="Нажми на меня">не замечать себя</span>. Мы не запрещаем эмоции и обиду, мы учимся добавлять «Я»: «я злюсь», «мне больно», «мне страшно», «мне важно…».</p>
       </div>
 
       <div class="card">
@@ -1543,7 +1643,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         </div>
       </div>
 
-      <div class="card" style="margin-top:20px">
+      <div class="card" style="margin-top:20px;background:#ede8f5">
         <p class="prose">Вернемся к диалогу между Чарли и Эмилией из фильма «Брачная история» (2019), чтобы увидеть, как Я- и ТЫ-высказывания влияют на общение героев.</p>
         <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
         <div style="position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius-sm);margin-bottom:20px">
@@ -1738,17 +1838,17 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           <p class="prose">3-частное высказывание помогает <strong>говорить о ситуации и о себе</strong>, а не нападать на другого.</p>
           <p class="prose" style="font-weight:600;margin-top:12px">Формула:</p>
           <ul class="prose" style="padding-left:20px;list-style-position:outside;margin-left:0">
-            <li><strong>«Когда ты»</strong> — конкретное поведение (факты),</li>
-            <li><strong>«Я чувствую»</strong> — мои эмоции,</li>
-            <li><strong>«Потому что»</strong> — почему это важно для меня / как это на меня влияет.</li>
+            <li><strong>«Когда ты...»</strong> — конкретное поведение (факты),</li>
+            <li><strong>«Я чувствую...»</strong> — мои эмоции,</li>
+            <li><strong><span class="easter-trigger" onclick="showEaster('easter-m3')" title="Нажми на меня">«Потому что...»</span></strong> — почему это важно для меня / как это на меня влияет.</li>
           </ul>
-          <div class="feedback-box info" style="margin-top:16px">Не «Ты меня бесишь», а «Когда ты, я чувствую, потому что».</div>
+          <div class="feedback-box info" style="margin-top:16px">Не «Ты меня бесишь», а «Когда ты..., я чувствую..., потому что...».</div>
         </div>
         <div class="card" style="margin-bottom:0;padding:0;overflow:hidden">
           <img src="https://i.ibb.co/hxz9MNZ7/3pieces.jpg" alt="3 части" style="width:100%;height:100%;display:block;object-fit:cover;" onerror="this.parentElement.style.display='none'">
         </div>
       </div>
-      <div class="card">
+      <div class="card" style="background:#ede8f5">
         <p class="prose">Вернемся к диалогу между Чарли и Эмилией из фильма «Брачная история» (2019), чтобы увидеть, как могло бы 3-частное высказывание повлиять на общение героев.</p>
         <div class="feedback-box neutral" style="margin:12px 0;font-size:14px;font-style:italic">
           Эмилия: Он (сын) сказал, что ты постоянно говоришь по телефону и не играешь с ним.<br>
@@ -1914,7 +2014,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     <!-- БЛОК 4.1 -->
     <div class="block" id="b41">
       <h2 class="block-title">Говорить о границах без угроз</h2>
-      <div class="prose">В прошлом модуле вы научились собирать 3-частное высказывание. Но иногда этого недостаточно. Когда ситуация повторяется и вам нужно защитить себя, пора переходить к 5-частному высказыванию — добавлять к фактам ваши <strong>границы и решения</strong>.</div>
+      <div class="prose">В прошлом модуле вы научились собирать 3-частное высказывание. Но иногда этого недостаточно. Когда ситуация повторяется и вам нужно защитить себя, пора переходить к 5-частному высказыванию — <span class="easter-trigger" onclick="showEaster('easter-m4')" title="Нажми на меня">добавлять к фактам ваши <strong>границы и решения</strong></span>.</div>
       <div class="card" style="margin-top:20px">
         <div class="accordion"><div class="accordion-head" onclick="toggleAccordion(this)"><span>1. Мне важно поговорить о... (Тема)</span><span class="accordion-icon">›</span></div><div class="accordion-body"><p style="font-size:14px;line-height:1.7">Мы сразу обозначаем, о чём пойдёт речь, без внезапных нападений.<br><em>Пример: «Мне важно обсудить наши общие финансы».</em></p></div></div>
         <div class="accordion"><div class="accordion-head" onclick="toggleAccordion(this)"><span>2. Я переживаю / мне тяжело, когда... (Чувство + Ситуация)</span><span class="accordion-icon">›</span></div><div class="accordion-body"><p style="font-size:14px;line-height:1.7">Здесь мы используем уже знакомое нам 3-частное высказывание.<br><em>Пример: «Мне страшно и тревожно, когда с общей карты списываются деньги без предупреждения».</em></p></div></div>
@@ -1922,7 +2022,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <div class="accordion"><div class="accordion-head" onclick="toggleAccordion(this)"><span>4. На меня это влияет так... (Последствия)</span><span class="accordion-icon">›</span></div><div class="accordion-body"><p style="font-size:14px;line-height:1.7">Объясняем реальный ущерб для нас.<br><em>Пример: «Из-за этого нам нечем платить за квартиру, и я не могу спать из-за долгов».</em></p></div></div>
         <div class="accordion"><div class="accordion-head" onclick="toggleAccordion(this)"><span>5. Поэтому я решаю... (Граница)</span><span class="accordion-icon">›</span></div><div class="accordion-body"><p style="font-size:14px;line-height:1.7"><strong>Самое главное отличие!</strong> Вы говорите не о том, что он должен сделать, а о том, что <em>вы</em> собираетесь сделать для своей безопасности.<br><em>Пример: «Поэтому я решаю перевести свою зарплату на отдельный счёт».</em></p></div></div>
       </div>
-      <div class="card">
+      <div class="card" style="background:#ede8f5">
         <p class="prose">Как бы звучал ответ Эмилии из «Брачной истории», если бы она применила формулу 5-частного высказывания:</p>
         <ol style="font-size:14px;line-height:1.9;padding-left:20px;margin-top:12px">
           <li><strong>Тема:</strong> «Чарли, мне важно обсудить наше расписание и время с Генри».</li>
@@ -2124,6 +2224,9 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <div id="q53-fb" style="display:none;margin-top:12px"></div>
         <div id="b53-after" style="display:none">
           <div class="feedback-box neutral" style="margin-top:16px">В ответе вы не спорите о том, «кто прав». Вы возвращаетесь к себе: что происходит, как это влияет на вас и что вы для себя решили.</div>
+          <div style="text-align:center;margin-top:16px">
+            <span onclick="showBreathing()" title="Нажми на меня" style="font-size:32px;cursor:pointer;display:inline-block;transition:transform 0.2s" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🍵</span>
+          </div>
           <div class="btn-row">
             <button class="btn btn-primary" id="btn-b53" onclick="goBlock('b54')">Далее →</button>
           </div>
@@ -2172,7 +2275,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
     <!-- БЛОК 6.1 -->
     <div class="block" id="b61">
-      <h2 class="block-title">Ваша личная шпаргалка</h2>
+      <h2 class="block-title">Ваша личная <span class="easter-trigger" onclick="showEaster('easter-m6')" title="Нажми на меня">шпаргалка</span></h2>
       <div class="prose">Здесь мы собрали готовые формулировки для самых частых и болезненных ситуаций в общении с зависимым близким. Это конструктор и опора.<br><br>Главная структура: <strong>Факт → Чувство → Важность (потребность) → Граница (ваше решение).</strong></div>
       <div class="card">
         <div class="question-block">
@@ -2328,6 +2431,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       </div>
     </div>
 
+        <div class="easter-footer">Если вы дочитали аж досюда: просто знайте, что вы не одни.<br>Независимо от того, как поведёт себя ваш близкий завтра, вы уже сделали огромный шаг для себя.<br>Спасибо за ваше доверие.</div>
     </div><!-- /page-m7 -->
 
   </div><!-- /content-area -->
@@ -4250,7 +4354,90 @@ function expandAndGo(id) {
 }
 
 // ═══════════ INIT ═══════════
+
+// ═══════════ EASTER EGGS ═══════════
+function showEaster(id) {
+  document.getElementById('easter-overlay').style.display = 'block';
+  document.getElementById(id).style.display = 'block';
+}
+function closeEaster() {
+  document.getElementById('easter-overlay').style.display = 'none';
+  document.querySelectorAll('.easter-popup').forEach(p => p.style.display = 'none');
+  // Restore m2 text if changed
+  const m2 = document.getElementById('easter-m2-text');
+  if (m2) m2.innerHTML = 'не замечать себя';
+}
+function triggerM2() {
+  const el = document.getElementById('easter-m2-text');
+  if (el) {
+    el.innerHTML = '<span style="text-decoration:line-through;opacity:0.4">не</span> замечать себя';
+    setTimeout(() => el.innerHTML = 'замечать себя', 600);
+  }
+  setTimeout(() => showEaster('easter-m2'), 700);
+}
+function glowDivider() {
+  const d = document.getElementById('easter-m4-line');
+  if (d) d.classList.add('glow');
+}
+function showEasterAfterGlow() {
+  glowDivider();
+  setTimeout(() => showEaster('easter-m4'), 300);
+}
+function showBreathing() {
+  document.getElementById('easter-m5').classList.add('active');
+}
+function closeBreathing() {
+  document.getElementById('easter-m5').classList.remove('active');
+}
+// ═════════════════════════════════════
+
 document.addEventListener('DOMContentLoaded', initUI);
 </script>
+
+<!-- EASTER EGG POPUPS -->
+<div class="easter-overlay" id="easter-overlay" onclick="closeEaster()"></div>
+
+<div class="easter-popup" id="easter-m0" onclick="closeEaster()">
+  <span class="easter-emoji">🪄</span>
+  <p>Волшебной палочки, чтобы исправить другого человека, увы, не существует. Но ваше умение выбирать себя — это ваша реальная суперсила.</p>
+  <br><small>Нажмите, чтобы закрыть</small>
+</div>
+
+<div class="easter-popup" id="easter-m1" onclick="closeEaster()">
+  <span class="easter-emoji">🎥</span>
+  <p>Факты — это ваш спасательный круг.<br><br>Если в ссоре вас накрывает паника или слёзы, просто начните мысленно называть факты вокруг себя: «Я сижу на стуле. Передо мной стол. Я дышу.»<br><br>Это поможет вернуться в реальность.</p>
+  <br><small>Нажмите, чтобы закрыть</small>
+</div>
+
+<div class="easter-popup" id="easter-m2" onclick="closeEaster()">
+  <span class="easter-emoji">💛</span>
+  <p>Прямо сейчас вы делаете огромную работу, чтобы наконец-то заметить себя.<br><br>Ваши потребности важны.<br><br>Вы имеете право на отдых, покой и свою собственную жизнь.</p>
+  <br><small>Нажмите, чтобы закрыть</small>
+</div>
+
+<div class="easter-popup" id="easter-m3" onclick="closeEaster()">
+  <span class="easter-emoji">✨</span>
+  <p>Иногда вам не нужно долго объяснять и оправдывать свои границы.<br><br>Завершить фразу можно просто: «...потому что я так решила, и со мной так нельзя».<br><br>Этого уже достаточно.</p>
+  <br><small>Нажмите, чтобы закрыть</small>
+</div>
+
+<div class="easter-popup" id="easter-m4" onclick="closeEaster()">
+  <span class="easter-emoji">🛟</span>
+  <p>Ваша граница — это не стена, чтобы наказать другого. Это спасательный круг, который защищает ваш личный запас прочности.<br><br>Вы имеете полное право провести эту черту.</p>
+  <br><small>Нажмите, чтобы закрыть</small>
+</div>
+
+<div class="easter-popup" id="easter-m6" onclick="closeEaster()">
+  <span class="easter-emoji">📋</span>
+  <p>Самая универсальная шпаргалка: иногда лучшая фраза — это просто отсутствие ответа. Вы не обязаны реагировать мгновенно. Развернуться, взять паузу и выйти из комнаты — это тоже очень сильная позиция.</p>
+  <br><small>Нажмите, чтобы закрыть</small>
+</div>
+
+<div class="breathing-overlay" id="easter-m5" onclick="closeBreathing()">
+  <div class="breathing-circle"></div>
+  <p>Вы читаете этот сложный материал, потому что столкнулись с тяжёлым опытом.<br><br>Вы огромная молодец, что не сдаётесь.<br><br>Прямо сейчас оторвите взгляд от экрана, опустите плечи.<br><br>Вдох... Выдох...<br><br>Подышите с этим кругом 15 секунд.<br><br>Вы справляетесь.</p>
+  <br><small>Нажмите, чтобы закрыть</small>
+</div>
+
 </body>
 </html>
