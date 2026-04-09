@@ -918,6 +918,31 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 .easter-footer:hover { opacity: 1; color: var(--text); font-size: 14px; }
 .easter-footer.revealed { opacity: 1; color: var(--text); font-size: 14px; }
 /* ══════════════════════════════════════════ */
+
+/* === MOBILE RADIO TABLE === */
+@media (max-width: 600px) {
+  table.radio-table { display: none !important; }
+}
+@media (min-width: 601px) {
+  .radio-table-mobile { display: none !important; }
+}
+.radio-table-mobile { padding: 0 0 4px; }
+.radio-mobile-row {
+  display: flex; flex-direction: column;
+  padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 8px;
+}
+.radio-mobile-row:last-child { border-bottom: none; }
+.radio-mobile-phrase { font-size: 14px; color: var(--text); line-height: 1.5; font-weight: 500; }
+.radio-mobile-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.radio-mobile-btn {
+  flex: 1; min-width: 0; padding: 8px 12px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  cursor: pointer; text-align: center; transition: all 0.15s;
+}
+.radio-mobile-btn:hover { border-color: var(--primary); color: var(--primary); }
+.radio-mobile-btn.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1735,7 +1760,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <!-- Таблица с радиокнопками (до проверки) -->
         <div id="table-b22a-radio-wrap">
           <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
-          <table class="exercise-table" style="table-layout:fixed;width:100%">
+          <table class="exercise-table radio-table" style="table-layout:fixed;width:100%">
             <colgroup><col><col style="width:120px"><col style="width:160px"></colgroup>
             <thead><tr>
               <th>Фраза</th>
@@ -1753,6 +1778,16 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
               <tr><td>Мне стыдно</td><td style="text-align:center"><input type="radio" name="b22r7" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r7" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
             </tbody>
           </table>
+          <div class="radio-table-mobile">
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Мне страшно</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r0','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r0','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Я злюсь</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r1','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r1','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Я чувствую, что ты меня не уважаешь</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r2','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r2','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Мне больно</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r3','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r3','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Я думаю, что ты ведёшь себя неправильно</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r4','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r4','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Мне одиноко</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r5','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r5','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Ты меня не ценишь</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r6','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r6','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Мне стыдно</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r7','Чувство','checkRadiosB22a')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22r7','Оценка/мысль','checkRadiosB22a')">Оценка/мысль</button></div></div>
+          </div>
           <div style="padding:12px 20px">
             <button class="btn btn-secondary" id="b22-check1" disabled onclick="submitB22aRadios()">Проверить задание 1</button>
           </div>
@@ -1788,7 +1823,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           <!-- Таблица с радиокнопками (до проверки) -->
           <div id="table-b22b-radio-wrap">
             <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
-            <table class="exercise-table" style="table-layout:fixed;width:100%">
+            <table class="exercise-table radio-table" style="table-layout:fixed;width:100%">
               <colgroup><col><col style="width:110px"><col style="width:170px"></colgroup>
               <thead><tr>
                 <th>Фраза</th>
@@ -1802,6 +1837,12 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
                 <tr><td>Я чувствую злость и усталость</td><td style="text-align:center"><input type="radio" name="b22br3" value="Чувство" onchange="checkRadiosB22b()"></td><td style="text-align:center"><input type="radio" name="b22br3" value="Оценка о другом" onchange="checkRadiosB22b()"></td></tr>
               </tbody>
             </table>
+            <div class="radio-table-mobile">
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Я чувствую, что ты меня не уважаешь</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br0','Чувство','checkRadiosB22b')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br0','Оценка о другом','checkRadiosB22b')">Оценка о другом</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Я чувствую тревогу и бессилие</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br1','Чувство','checkRadiosB22b')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br1','Оценка о другом','checkRadiosB22b')">Оценка о другом</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Я чувствую, что ты плохой человек</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br2','Чувство','checkRadiosB22b')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br2','Оценка о другом','checkRadiosB22b')">Оценка о другом</button></div></div>
+              <div class="radio-mobile-row"><div class="radio-mobile-phrase">Я чувствую злость и усталость</div><div class="radio-mobile-btns"><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br3','Чувство','checkRadiosB22b')">Чувство</button><button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b22br3','Оценка о другом','checkRadiosB22b')">Оценка о другом</button></div></div>
+            </div>
             <div style="padding:12px 20px">
               <button class="btn btn-secondary" id="b22-check2" disabled onclick="submitB22bRadios()">Проверить задание 2</button>
             </div>
@@ -3867,6 +3908,19 @@ function revealTableFeedbackSimple(tableId, thId, feedbacks) {
 
 function enableAfterCheck22a() {
   document.getElementById('task22b-wrap').style.display = 'block';
+}
+
+// Syncs mobile button pick with hidden radio inputs and triggers check
+function mobileRadioPick(btn, radioName, value, checkFn) {
+  // Update hidden radio
+  var radios = document.querySelectorAll('input[name="' + radioName + '"]');
+  radios.forEach(function(r) { r.checked = (r.value === value); });
+  // Update button styles within this row
+  var row = btn.closest('.radio-mobile-row');
+  if (row) row.querySelectorAll('.radio-mobile-btn').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  // Trigger check
+  if (window[checkFn]) window[checkFn]();
 }
 
 function checkRadiosB22a() {
