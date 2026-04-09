@@ -919,8 +919,116 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 .easter-footer.revealed { opacity: 1; color: var(--text); font-size: 14px; }
 /* ══════════════════════════════════════════ */
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+
+<!-- ═══════════ PRELOADER ═══════════ -->
+<style>
+#preloader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #f7f5f0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 20px;
+  transition: opacity 0.5s ease;
+}
+#preloader.fade-out { opacity: 0; pointer-events: none; }
+.preloader-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px; font-weight: 700;
+  color: #2d4a7a; text-align: center;
+  line-height: 1.4; max-width: 240px;
+}
+.preloader-bar-wrap {
+  width: 200px; height: 4px;
+  background: #e5e0d8; border-radius: 2px; overflow: hidden;
+}
+.preloader-bar {
+  height: 100%; width: 0%;
+  background: #5b8a6e; border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.preloader-hint {
+  font-family: 'Nunito', sans-serif;
+  font-size: 12px; color: #9ca3af;
+}
+</style>
+
+<div id="preloader">
+  <div class="preloader-logo">Говорить так,<br>чтобы тебя услышали</div>
+  <div class="preloader-bar-wrap"><div class="preloader-bar" id="preloader-bar"></div></div>
+  <div class="preloader-hint" id="preloader-hint">Загрузка материалов...</div>
+</div>
+
+<script>
+(function() {
+  var CRITICAL_IMGS = [
+    'https://i.ibb.co/HLF2qYq4/title.png',
+    'https://i.ibb.co/rRRZNkGv/fact.jpg',
+    'https://i.ibb.co/V0HGPdZc/Message-you.png',
+    'https://i.ibb.co/0jwzDw1Q/Message-me.png'
+  ];
+  var ALL_IMGS = [
+    'https://i.ibb.co/HLF2qYq4/title.png',
+    'https://i.ibb.co/rRRZNkGv/fact.jpg',
+    'https://i.ibb.co/V0HGPdZc/Message-you.png',
+    'https://i.ibb.co/0jwzDw1Q/Message-me.png',
+    'https://i.ibb.co/WN9b2h4z/Module-1.png',
+    'https://i.ibb.co/Nh590bv/Module-2.png',
+    'https://i.ibb.co/YCryW7x/Module-3.png',
+    'https://i.ibb.co/VrhVTxQ/Module-4.png',
+    'https://i.ibb.co/CKSqLCGQ/Module-5.jpg',
+    'https://i.ibb.co/xt4bwzTR/feels.jpg',
+    'https://i.ibb.co/4n36MfT6/you-me.jpg',
+    'https://i.ibb.co/6Rp6Bfkc/masks.jpg',
+    'https://i.ibb.co/SX4rMQHD/balance.jpg',
+    'https://i.ibb.co/hxz9MNZ7/3pieces.jpg',
+    'https://i.ibb.co/wZytzLjH/cap.png'
+  ];
+
+  var bar = document.getElementById('preloader-bar');
+  var hint = document.getElementById('preloader-hint');
+  var preloader = document.getElementById('preloader');
+  var total = ALL_IMGS.length;
+  var loaded = 0;
+  var criticalLoaded = 0;
+  var hidden = false;
+
+  function hidePreloader() {
+    if (hidden) return;
+    hidden = true;
+    bar.style.width = '100%';
+    hint.textContent = 'Готово!';
+    setTimeout(function() {
+      preloader.classList.add('fade-out');
+      setTimeout(function() { preloader.style.display = 'none'; }, 520);
+    }, 200);
+  }
+
+  function onLoad() {
+    loaded++;
+    bar.style.width = Math.round((loaded / total) * 100) + '%';
+    // Hide as soon as all critical images are ready
+    if (!hidden) {
+      criticalLoaded++;
+      if (criticalLoaded >= CRITICAL_IMGS.length) hidePreloader();
+    }
+  }
+
+  // Preload all images
+  ALL_IMGS.forEach(function(src) {
+    var img = new Image();
+    img.onload = img.onerror = onLoad;
+    img.src = src;
+  });
+
+  // Safety fallback: hide after 5s no matter what
+  setTimeout(hidePreloader, 5000);
+})();
+</script>
+<!-- ═══════════════════════════════════ -->
 
 <!-- SIDEBAR -->
 <aside id="sidebar">
@@ -1480,11 +1588,45 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     <div class="block" id="b15">
       <h2 class="block-title">Мини-итог: говорю фактами, а не ярлыками</h2>
 
-      <div class="card card-accent">
-        <p class="prose">В этом модуле вы потренировались замечать разницу между фактом, оценкой и ярлыком.</p>
-        <p class="prose">Факты — это то, что можно увидеть и записать: кто, что сделал, где, когда, сколько.<br>Оценки и ярлыки — это «ужасно», «так нельзя», «ты эгоист/игроман/наркоман» — они усиливают защиту и уводят разговор в ссору.</p>
-        <p class="prose" style="margin-bottom:0">Навык, который вы начали осваивать, — сначала называть факты, а уже потом добавлять свои чувства и важность ситуации.</p>
+      <style>
+        .b15-cols {
+          display: flex;
+          align-items: stretch;
+          gap: 24px;
+          margin-bottom: 20px;
+        }
+        .b15-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
+        .b15-text-col .card { flex: 1; }
+        .b15-img-col { flex: 1; min-width: 0; }
+        .b15-img-col img {
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+          border-radius: var(--radius);
+          border: 3px solid #5B8A6E;
+          box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+          .b15-cols { flex-direction: column; }
+          .b15-text-col { order: 1; }
+          .b15-img-col { width: 100%; order: 2; }
+          .b15-img-col img { height: auto; }
+        }
+      </style>
+
+      <div class="b15-cols" id="b15-cols">
+        <div class="b15-text-col">
+          <div class="card card-accent" style="margin-bottom:0">
+            <p class="prose">В этом модуле вы потренировались замечать разницу между фактом, оценкой и ярлыком.</p>
+            <p class="prose">Факты — это то, что можно увидеть и записать: кто, что сделал, где, когда, сколько.<br>Оценки и ярлыки — это «ужасно», «так нельзя», «ты эгоист/игроман/наркоман» — они усиливают защиту и уводят разговор в ссору.</p>
+            <p class="prose" style="margin-bottom:0">Навык, который вы начали осваивать, — сначала называть факты, а уже потом добавлять свои чувства и важность ситуации.</p>
+          </div>
+        </div>
+        <div class="b15-img-col" id="b15-img-col">
+          <img src="https://i.ibb.co/WN9b2h4z/Module-1.png" alt="Иллюстрация модуля 1" id="b15-img">
+        </div>
       </div>
+
+
 
       <div class="card">
         <div class="question-block">
@@ -1588,26 +1730,53 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       <div class="card" style="margin-top:20px;padding:0;overflow:hidden">
         <div style="padding:16px 20px;font-weight:600;font-size:15px;border-bottom:1px solid var(--border)">Задание 1. Чувство или оценка/мысль?</div>
         <div style="padding:12px 20px;font-size:14px;color:var(--text)">Отнесите каждую фразу к «Чувству» или к «Оценке/мысли о другом».</div>
-      <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
-        <table class="exercise-table" id="table-b22a" style="table-layout:fixed;width:100%"><colgroup><col><col style="width:160px"><col></colgroup>
-          <thead><tr>
-            <th>Фраза</th>
-            <th>Ваш выбор</th>
-            <th id="th-b22a" style="display:none">Пояснение</th>
-          </tr></thead>
-          <tbody>
-            <tr data-correct="Чувство"><td>Мне страшно</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Чувство"><td>Я злюсь</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Оценка/мысль"><td>Я чувствую, что ты меня не уважаешь</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Чувство"><td>Мне больно</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Оценка/мысль"><td>Я думаю, что ты ведёшь себя неправильно</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Чувство"><td>Мне одиноко</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Оценка/мысль"><td>Ты меня не ценишь</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Чувство"><td>Мне стыдно</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22a','b22-check1')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка/мысль</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-          </tbody>
-        </table>
-        <div style="padding:12px 20px">
-          <button class="btn btn-secondary" id="b22-check1" disabled onclick="revealTableFeedbackSimple('table-b22a','th-b22a',FEEDBACK_B22A); enableAfterCheck22a()">Проверить задание 1</button>
+        <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
+
+        <!-- Таблица с радиокнопками (до проверки) -->
+        <div id="table-b22a-radio-wrap">
+          <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
+          <table class="exercise-table" style="table-layout:fixed;width:100%">
+            <colgroup><col><col style="width:120px"><col style="width:160px"></colgroup>
+            <thead><tr>
+              <th>Фраза</th>
+              <th style="text-align:center;white-space:nowrap">Чувство</th>
+              <th style="text-align:center;white-space:nowrap;padding-right:14px">Оценка/мысль</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>Мне страшно</td><td style="text-align:center"><input type="radio" name="b22r0" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r0" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+              <tr><td>Я злюсь</td><td style="text-align:center"><input type="radio" name="b22r1" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r1" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+              <tr><td>Я чувствую, что ты меня не уважаешь</td><td style="text-align:center"><input type="radio" name="b22r2" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r2" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+              <tr><td>Мне больно</td><td style="text-align:center"><input type="radio" name="b22r3" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r3" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+              <tr><td>Я думаю, что ты ведёшь себя неправильно</td><td style="text-align:center"><input type="radio" name="b22r4" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r4" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+              <tr><td>Мне одиноко</td><td style="text-align:center"><input type="radio" name="b22r5" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r5" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+              <tr><td>Ты меня не ценишь</td><td style="text-align:center"><input type="radio" name="b22r6" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r6" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+              <tr><td>Мне стыдно</td><td style="text-align:center"><input type="radio" name="b22r7" value="Чувство" onchange="checkRadiosB22a()"></td><td style="text-align:center"><input type="radio" name="b22r7" value="Оценка/мысль" onchange="checkRadiosB22a()"></td></tr>
+            </tbody>
+          </table>
+          <div style="padding:12px 20px">
+            <button class="btn btn-secondary" id="b22-check1" disabled onclick="submitB22aRadios()">Проверить задание 1</button>
+          </div>
+        </div>
+
+        <!-- Таблица с результатами (после проверки) -->
+        <div id="table-b22a-result-wrap" style="display:none">
+          <table class="exercise-table" id="table-b22a" style="table-layout:fixed;width:100%"><colgroup><col><col style="width:160px"><col></colgroup>
+            <thead><tr>
+              <th>Фраза</th>
+              <th>Ваш выбор</th>
+              <th id="th-b22a">Пояснение</th>
+            </tr></thead>
+            <tbody>
+              <tr data-correct="Чувство"><td>Мне страшно</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              <tr data-correct="Чувство"><td>Я злюсь</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              <tr data-correct="Оценка/мысль"><td>Я чувствую, что ты меня не уважаешь</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              <tr data-correct="Чувство"><td>Мне больно</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              <tr data-correct="Оценка/мысль"><td>Я думаю, что ты ведёшь себя неправильно</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              <tr data-correct="Чувство"><td>Мне одиноко</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              <tr data-correct="Оценка/мысль"><td>Ты меня не ценишь</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              <tr data-correct="Чувство"><td>Мне стыдно</td><td class="b22a-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -1615,17 +1784,40 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <div class="card" style="padding:0;overflow:hidden;margin-top:20px">
           <div style="padding:16px 20px;font-weight:600;font-size:15px;border-bottom:1px solid var(--border)">Задание 2. «Я чувствую...» — чувство или оценка?</div>
           <div style="padding:14px 20px;font-size:14px;color:var(--text-muted)">Не всё, что начинается с «я чувствую», — про чувства. Выберите правильное.</div>
-          <table class="exercise-table" id="table-b22b" style="table-layout:fixed;width:100%"><colgroup><col><col style="width:160px"><col></colgroup>
-            <thead><tr><th>Фраза</th><th>Ваш выбор</th><th id="th-b22b" style="display:none">Пояснение</th></tr></thead>
-            <tbody>
-              <tr data-correct="Оценка о другом"><td>Я чувствую, что ты меня не уважаешь</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22b','b22-check2')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-              <tr data-correct="Чувство"><td>Я чувствую тревогу и бессилие</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22b','b22-check2')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-              <tr data-correct="Оценка о другом"><td>Я чувствую, что ты плохой человек</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22b','b22-check2')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-              <tr data-correct="Чувство"><td>Я чувствую злость и усталость</td><td><select class="answer-select" onchange="checkDropdowns2('table-b22b','b22-check2')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            </tbody>
-          </table>
-          <div style="padding:12px 20px">
-            <button class="btn btn-secondary" id="b22-check2" disabled onclick="revealTableFeedbackSimple('table-b22b','th-b22b',FEEDBACK_B22B); showAfterB22()">Проверить задание 2</button>
+
+          <!-- Таблица с радиокнопками (до проверки) -->
+          <div id="table-b22b-radio-wrap">
+            <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
+            <table class="exercise-table" style="table-layout:fixed;width:100%">
+              <colgroup><col><col style="width:110px"><col style="width:170px"></colgroup>
+              <thead><tr>
+                <th>Фраза</th>
+                <th style="text-align:center;white-space:nowrap">Чувство</th>
+                <th style="text-align:center;white-space:nowrap;padding-right:14px">Оценка о другом</th>
+              </tr></thead>
+              <tbody>
+                <tr><td>Я чувствую, что ты меня не уважаешь</td><td style="text-align:center"><input type="radio" name="b22br0" value="Чувство" onchange="checkRadiosB22b()"></td><td style="text-align:center"><input type="radio" name="b22br0" value="Оценка о другом" onchange="checkRadiosB22b()"></td></tr>
+                <tr><td>Я чувствую тревогу и бессилие</td><td style="text-align:center"><input type="radio" name="b22br1" value="Чувство" onchange="checkRadiosB22b()"></td><td style="text-align:center"><input type="radio" name="b22br1" value="Оценка о другом" onchange="checkRadiosB22b()"></td></tr>
+                <tr><td>Я чувствую, что ты плохой человек</td><td style="text-align:center"><input type="radio" name="b22br2" value="Чувство" onchange="checkRadiosB22b()"></td><td style="text-align:center"><input type="radio" name="b22br2" value="Оценка о другом" onchange="checkRadiosB22b()"></td></tr>
+                <tr><td>Я чувствую злость и усталость</td><td style="text-align:center"><input type="radio" name="b22br3" value="Чувство" onchange="checkRadiosB22b()"></td><td style="text-align:center"><input type="radio" name="b22br3" value="Оценка о другом" onchange="checkRadiosB22b()"></td></tr>
+              </tbody>
+            </table>
+            <div style="padding:12px 20px">
+              <button class="btn btn-secondary" id="b22-check2" disabled onclick="submitB22bRadios()">Проверить задание 2</button>
+            </div>
+          </div>
+
+          <!-- Таблица с результатами (после проверки) -->
+          <div id="table-b22b-result-wrap" style="display:none">
+            <table class="exercise-table" id="table-b22b" style="table-layout:fixed;width:100%"><colgroup><col><col style="width:160px"><col></colgroup>
+              <thead><tr><th>Фраза</th><th>Ваш выбор</th><th id="th-b22b">Пояснение</th></tr></thead>
+              <tbody>
+                <tr data-correct="Оценка о другом"><td>Я чувствую, что ты меня не уважаешь</td><td class="b22b-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+                <tr data-correct="Чувство"><td>Я чувствую тревогу и бессилие</td><td class="b22b-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+                <tr data-correct="Оценка о другом"><td>Я чувствую, что ты плохой человек</td><td class="b22b-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+                <tr data-correct="Чувство"><td>Я чувствую злость и усталость</td><td class="b22b-chosen"></td><td class="fb-cell" style="font-size:13px"></td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -1644,16 +1836,110 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     <div class="block" id="b23">
       <h2 class="block-title">Я-высказывание и Ты-высказывание: куда направлен фокус</h2>
 
-      <div class="two-col">
-        <div class="card" style="margin-bottom:0">
-          <div style="font-size:13px;font-weight:700;color:var(--danger);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Ты-высказывания</div>
-          <p style="font-size:14px;line-height:1.7">Фокус на другом человеке:<br>«Ты опять...»,<br>«Ты никогда...»,<br>«Ты должен...»</p>
-          <p style="font-size:13px;color:var(--text-muted);margin-top:8px">Звучат как обвинение и включают защиту.</p>
+      <style>
+        .flashcard-row { display: flex; justify-content: space-around; margin-bottom: 4px; }
+        .flashcard-row .flashcard { width: 30%; flex-shrink: 0; flex-grow: 0; }
+        @media (max-width: 600px) { .flashcard-row { flex-direction: column; align-items: stretch; gap: 20px; }
+          .flashcard-row .flashcard { width: 100%; } }
+        .flashcard { perspective: 1000px; cursor: pointer; overflow: hidden; }
+        .flashcard-inner {
+          position: relative; width: 100%;
+          transform-style: preserve-3d;
+          transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+        }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+          border-radius: var(--radius);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          display: flex; flex-direction: column;
+          overflow: hidden;
+          box-shadow: var(--shadow);
+        }
+        .flashcard-front {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          width: 100%;
+          position: relative;
+        }
+        .flashcard-back {
+          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .flashcard-front img { width: 100%; display: block; height: auto; }
+        .flashcard-front-label {
+          padding: 12px 16px;
+          font-family: 'Unbounded', sans-serif;
+          font-size: 13px; font-weight: 700;
+          text-align: center;
+          flex-shrink: 0;
+        }
+        .flashcard-front-hint {
+          font-size: 11px; font-family: 'Nunito', sans-serif;
+          font-weight: 400; opacity: 0.6;
+          text-align: center; padding: 0 16px 10px;
+          flex-shrink: 0;
+        }
+        .flashcard-back {
+          transform: rotateY(180deg);
+          display: flex; flex-direction: column;
+          align-items: flex-start; justify-content: center;
+          padding: 24px 10%;
+          border: 1px solid var(--border);
+        }
+        .flashcard-back-title {
+          font-family: 'Unbounded', sans-serif;
+          font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.05em;
+          margin-bottom: 10px;
+          white-space: nowrap; width: 100%;
+        }
+        .flashcard-back p.fc-line {
+          line-height: 1.5; margin-bottom: 2px;
+          white-space: nowrap; width: 100%;
+        }
+        .flashcard-back p.fc-footer {
+          margin-top: 10px; margin-bottom: 0;
+          white-space: normal; width: 100%;
+          color: var(--text-muted);
+          line-height: 1.5;
+          font-size: 13px;
+        }
+        .flashcard-back.danger-back { background: #fff5f5; }
+        .flashcard-back.success-back { background: var(--success-bg); }
+      </style>
+
+      <div class="flashcard-row">
+        <!-- Карточка 1: Ты-высказывания -->
+        <div class="flashcard" onclick="this.classList.toggle('flipped')" title="Нажмите, чтобы перевернуть">
+          <div class="flashcard-inner">
+            <div class="flashcard-front">
+              <img src="https://i.ibb.co/V0HGPdZc/Message-you.png" alt="Ты-высказывания">
+              <div class="flashcard-front-hint">Нажмите, чтобы узнать подробнее</div>
+            </div>
+            <div class="flashcard-back" style="background:#E6E3D7">
+              <p class="fc-line">Фокус на другом человеке:</p>
+              <p class="fc-line">«Ты опять...»,</p>
+              <p class="fc-line">«Ты никогда...»,</p>
+              <p class="fc-line">«Ты должен...»</p>
+              <p class="fc-footer">Звучат как обвинение и включают защиту.</p>
+            </div>
+          </div>
         </div>
-        <div class="card" style="margin-bottom:0">
-          <div style="font-size:13px;font-weight:700;color:var(--success);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Я-высказывания</div>
-          <p style="font-size:14px;line-height:1.7">Фокус на себе:<br>«Я злюсь»,<br>«Мне больно»,<br>«Мне важно...»</p>
-          <p style="font-size:13px;color:var(--text-muted);margin-top:8px">Вы говорите о своём состоянии, не ставя диагноз.</p>
+        <!-- Карточка 2: Я-высказывания -->
+        <div class="flashcard" onclick="this.classList.toggle('flipped')" title="Нажмите, чтобы перевернуть">
+          <div class="flashcard-inner">
+            <div class="flashcard-front">
+              <img src="https://i.ibb.co/0jwzDw1Q/Message-me.png" alt="Я-высказывания">
+              <div class="flashcard-front-hint">Нажмите, чтобы узнать подробнее</div>
+            </div>
+            <div class="flashcard-back" style="background:#FCF9F1">
+              <p class="fc-line">Фокус на себе:</p>
+              <p class="fc-line">«Я злюсь»,</p>
+              <p class="fc-line">«Мне больно»,</p>
+              <p class="fc-line">«Мне важно...»</p>
+              <p class="fc-footer">Вы говорите о своём состоянии, не ставя диагноз.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1687,18 +1973,36 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
       <div class="card" style="margin-top:20px;padding:0;overflow:hidden">
         <div style="padding:16px 20px;font-weight:600;font-size:15px;border-bottom:1px solid var(--border)">Задание 1. Я-высказывание или Ты-высказывание?</div>
-      <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
-        <table class="exercise-table" id="table-b23a" style="table-layout:fixed;width:100%"><colgroup><col><col style="width:160px"><col></colgroup>
-          <thead><tr><th>Фраза</th><th>Ваш выбор</th><th id="th-b23a" style="display:none">Пояснение</th></tr></thead>
-          <tbody>
-            <tr data-correct="Ты-высказывание"><td>Ты опять пришёл пьяным позже полуночи</td><td><select class="answer-select" onchange="checkDropdowns2('table-b23a','b23-check1')"><option value="">— выберите —</option><option>Я-высказывание</option><option>Ты-высказывание</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Я-высказывание"><td>Я чувствую тревогу и усталость, когда ты приходишь пьяным</td><td><select class="answer-select" onchange="checkDropdowns2('table-b23a','b23-check1')"><option value="">— выберите —</option><option>Я-высказывание</option><option>Ты-высказывание</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Ты-высказывание"><td>Ты совсем не думаешь о семье, когда пьёшь</td><td><select class="answer-select" onchange="checkDropdowns2('table-b23a','b23-check1')"><option value="">— выберите —</option><option>Я-высказывание</option><option>Ты-высказывание</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Я-высказывание"><td>Мне больно и стыдно, когда ты приходишь пьяным на семейные встречи</td><td><select class="answer-select" onchange="checkDropdowns2('table-b23a','b23-check1')"><option value="">— выберите —</option><option>Я-высказывание</option><option>Ты-высказывание</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-          </tbody>
-        </table>
-        <div style="padding:12px 20px">
-          <button class="btn btn-secondary" id="b23-check1" disabled onclick="revealB23a(); showTask23b()">Проверить</button>
+
+        <!-- Таблица с радиокнопками (до проверки) -->
+        <div id="table-b23a-radio-wrap">
+          <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
+          <table class="exercise-table" style="table-layout:fixed;width:100%">
+            <colgroup><col><col style="width:145px"><col style="width:160px"></colgroup>
+            <thead><tr>
+              <th>Фраза</th>
+              <th style="text-align:center;white-space:nowrap">Я-высказывание</th>
+              <th style="text-align:center;white-space:nowrap;padding-right:14px">Ты-высказывание</th>
+            </tr></thead>
+            <tbody id="table-b23a-radio-tbody"></tbody>
+          </table>
+          <div style="padding:12px 20px">
+            <button class="btn btn-secondary" id="b23-check1" disabled onclick="submitB23aRadios()">Проверить</button>
+          </div>
+        </div>
+
+        <!-- Таблица с результатами (после проверки) -->
+        <div id="table-b23a-result-wrap" style="display:none">
+          <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
+          <table class="exercise-table" id="table-b23a" style="table-layout:fixed;width:100%">
+            <colgroup><col><col style="width:160px"><col></colgroup>
+            <thead><tr>
+              <th>Фраза</th>
+              <th>Ваш выбор</th>
+              <th id="th-b23a">Пояснение</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
         </div>
       </div>
 
@@ -1801,15 +2105,49 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     <div class="block" id="b26">
       <h2 class="block-title">Мини-итог: говорить о себе</h2>
 
-      <div class="card card-accent">
-        <p class="prose">В этом модуле вы тренировали язык заботы о себе:</p>
-        <ul class="prose" style="padding-left:20px;list-style-position:outside;margin-left:0">
-          <li>отличали чувства от оценок и мыслей («мне страшно», «я злюсь» — в отличие от «ты меня не уважаешь»);</li>
-          <li>замечали разницу между Я-высказываниями и Ты-высказываниями;</li>
-          <li>собирали первые фразы по формуле «Когда происходит... / я чувствую... / потому что мне важно...».</li>
-        </ul>
-        <p class="prose" style="margin-bottom:0">Дальше этот навык станет частью полных высказываний с границами.</p>
+      <style>
+        .b26-cols {
+          display: flex;
+          align-items: stretch;
+          gap: 24px;
+          margin-bottom: 20px;
+        }
+        .b26-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
+        .b26-text-col .card { flex: 1; }
+        .b26-img-col { flex: 1; min-width: 0; }
+        .b26-img-col img {
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+          border-radius: var(--radius);
+          border: 3px solid #5B8A6E;
+          box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+          .b26-cols { flex-direction: column; }
+          .b26-text-col { order: 1; }
+          .b26-img-col { width: 100%; order: 2; }
+          .b26-img-col img { height: auto; }
+        }
+      </style>
+
+      <div class="b26-cols" id="b26-cols">
+        <div class="b26-text-col">
+          <div class="card card-accent" style="margin-bottom:0">
+            <p class="prose">В этом модуле вы тренировали язык заботы о себе:</p>
+            <ul class="prose" style="padding-left:20px;list-style-position:outside;margin-left:0">
+              <li>отличали чувства от оценок и мыслей («мне страшно», «я злюсь» — в отличие от «ты меня не уважаешь»);</li>
+              <li>замечали разницу между Я-высказываниями и Ты-высказываниями;</li>
+              <li>собирали первые фразы по формуле «Когда происходит... / я чувствую... / потому что мне важно...».</li>
+            </ul>
+            <p class="prose" style="margin-bottom:0">Дальше этот навык станет частью полных высказываний с границами.</p>
+          </div>
+        </div>
+        <div class="b26-img-col" id="b26-img-col">
+          <img src="https://i.ibb.co/Nh590bv/Module-2.png" alt="Иллюстрация модуля 2" id="b26-img">
+        </div>
       </div>
+
+
 
       <div class="card">
         <div class="question-block">
@@ -1983,14 +2321,47 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     <!-- БЛОК 3.4 -->
     <div class="block" id="b34">
       <h2 class="block-title">Мини-итог: говорим трёхчастными высказываниями</h2>
-      <div class="card card-accent">
-        <p class="prose">В этом модуле вы потренировались собирать 3-частные высказывания. Это один из самых сильных инструментов для того, чтобы снизить градус конфликта и быть услышанной.</p>
-        <p class="prose" style="font-weight:600;margin-top:12px">Почему эта формула работает?</p>
-        <ul class="prose" style="padding-left:20px;list-style-position:outside;margin-left:0">
-          <li><strong>Опираясь на факт</strong>, вы убираете повод для спора.</li>
-          <li><strong>Называя свои чувства</strong>, вы показываете уязвимость, а не агрессию.</li>
-          <li><strong>Объясняя «потому что»</strong>, вы показываете причинно-следственную связь.</li>
-        </ul>
+
+      <style>
+        .b34-cols {
+          display: flex;
+          align-items: stretch;
+          gap: 24px;
+          margin-bottom: 20px;
+        }
+        .b34-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
+        .b34-text-col .card { flex: 1; }
+        .b34-img-col { flex: 1; min-width: 0; }
+        .b34-img-col img {
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+          border-radius: var(--radius);
+          border: 3px solid #5B8A6E;
+          box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+          .b34-cols { flex-direction: column; }
+          .b34-text-col { order: 1; }
+          .b34-img-col { width: 100%; order: 2; }
+          .b34-img-col img { height: auto; }
+        }
+      </style>
+
+      <div class="b34-cols">
+        <div class="b34-text-col">
+          <div class="card card-accent" style="margin-bottom:0">
+            <p class="prose">В этом модуле вы потренировались собирать 3-частные высказывания. Это один из самых сильных инструментов для того, чтобы снизить градус конфликта и быть услышанной.</p>
+            <p class="prose" style="font-weight:600;margin-top:12px">Почему эта формула работает?</p>
+            <ul class="prose" style="padding-left:20px;list-style-position:outside;margin-left:0">
+              <li><strong>Опираясь на факт</strong>, вы убираете повод для спора.</li>
+              <li><strong>Называя свои чувства</strong>, вы показываете уязвимость, а не агрессию.</li>
+              <li><strong>Объясняя «потому что»</strong>, вы показываете причинно-следственную связь.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="b34-img-col">
+          <img src="https://i.ibb.co/YCryW7x/Module-3.png" alt="Иллюстрация модуля 3">
+        </div>
       </div>
       <div class="card">
         <div class="question-block">
@@ -2117,8 +2488,41 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     <!-- БЛОК 4.4 -->
     <div class="block" id="b44">
       <h2 class="block-title">Ваша граница — ваша безопасность</h2>
-      <div class="card card-accent">
-        <p class="prose">В этом модуле вы потренировались собирать 5-частное высказывание.<br>Добавление всего одного пункта («что я решаю / что я буду или не буду делать») превращает бесконечную жалобу в твёрдую границу.<br>Главное правило: <strong>граница всегда про вас</strong>, а не про попытку насильно переделать другого человека.</p>
+
+      <style>
+        .b44-cols {
+          display: flex;
+          align-items: stretch;
+          gap: 24px;
+          margin-bottom: 20px;
+        }
+        .b44-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
+        .b44-text-col .card { flex: 1; }
+        .b44-img-col { flex: 1; min-width: 0; }
+        .b44-img-col img {
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+          border-radius: var(--radius);
+          border: 3px solid #5B8A6E;
+          box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+          .b44-cols { flex-direction: column; }
+          .b44-text-col { order: 1; }
+          .b44-img-col { width: 100%; order: 2; }
+          .b44-img-col img { height: auto; }
+        }
+      </style>
+
+      <div class="b44-cols">
+        <div class="b44-text-col">
+          <div class="card card-accent" style="margin-bottom:0">
+            <p class="prose">В этом модуле вы потренировались собирать 5-частное высказывание.<br>Добавление всего одного пункта («что я решаю / что я буду или не буду делать») превращает бесконечную жалобу в твёрдую границу.<br>Главное правило: <strong>граница всегда про вас</strong>, а не про попытку насильно переделать другого человека.</p>
+          </div>
+        </div>
+        <div class="b44-img-col">
+          <img src="https://i.ibb.co/VrhVTxQ/Module-4.png" alt="Иллюстрация модуля 4">
+        </div>
       </div>
       <div class="card">
         <div class="question-block">
@@ -2133,7 +2537,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <div class="question-block" style="margin-top:20px">
           <div class="question-label">В каких темах вам особенно важно научиться проговаривать свои границы?</div>
           <div class="options-list" id="q44-2">
-            <div class="option-item" onclick="selectRadio('q44-2','1',this)"><div class="option-radio"></div>Употребление близкого (алкоголь/наркотики)</div>
+            <div class="option-item" onclick="selectRadio('q44-2','1',this)"><div class="option-radio"></div>Употребление близкого (алкоголь/наркотики/игры)</div>
             <div class="option-item" onclick="selectRadio('q44-2','2',this)"><div class="option-radio"></div>Игровая зависимость</div>
             <div class="option-item" onclick="selectRadio('q44-2','3',this)"><div class="option-radio"></div>Общие деньги, долги и кредиты</div>
             <div class="option-item" onclick="selectRadio('q44-2','4',this)"><div class="option-radio"></div>Бытовые обязанности и договорённости</div>
@@ -2203,20 +2607,26 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       <div class="card" id="b52-task1">
         <div class="question-label" style="margin-bottom:14px">Задание 1. Какой ответ больше всего похож на <strong>сдачу позиции</strong>?</div>
         <div class="options-list" id="q52-1">
-          <div class="option-item" onclick="selectRadioCustomFeedback('q52-1','сдача',this,'q52-fb1',{'сдача':{'type':'correct','text':'Да. Это сдача позиции: говорящая отказывается от своей границы и обесценивает свой опыт.'},'позиция':{'type':'wrong','text':'Нет. Это не сдача, а сохранение позиции без нападения.'},'атака':{'type':'wrong','text':'Нет. Это атака и эскалация конфликта, но не сдача.'}}); revealB52Task2()"><div class="option-radio"></div>Ладно, может, я действительно всё преувеличиваю, давай забудем.</div>
-          <div class="option-item" onclick="selectRadioCustomFeedback('q52-1','позиция',this,'q52-fb1',{'сдача':{'type':'correct','text':'Да. Это сдача позиции: говорящая отказывается от своей границы и обесценивает свой опыт.'},'позиция':{'type':'wrong','text':'Нет. Это не сдача, а сохранение позиции без нападения.'},'атака':{'type':'wrong','text':'Нет. Это атака и эскалация конфликта, но не сдача.'}}); revealB52Task2()"><div class="option-radio"></div>Я понимаю, что тебе неприятно это слышать, но для меня это важно, и я остаюсь при своём решении.</div>
-          <div class="option-item" onclick="selectRadioCustomFeedback('q52-1','атака',this,'q52-fb1',{'сдача':{'type':'correct','text':'Да. Это сдача позиции: говорящая отказывается от своей границы и обесценивает свой опыт.'},'позиция':{'type':'wrong','text':'Нет. Это не сдача, а сохранение позиции без нападения.'},'атака':{'type':'wrong','text':'Нет. Это атака и эскалация конфликта, но не сдача.'}}); revealB52Task2()"><div class="option-radio"></div>Сам во всём виноват, ты меня уже довёл.</div>
+          <div class="option-item" onclick="selectRadioDeferred('q52-1','сдача',this,'q52-fb1',{'сдача':{'type':'correct','text':'Да. Это сдача позиции: говорящая отказывается от своей границы и обесценивает свой опыт.'},'позиция':{'type':'wrong','text':'Нет. Это не сдача, а сохранение позиции без нападения.'},'атака':{'type':'wrong','text':'Нет. Это атака и эскалация конфликта, но не сдача.'}},'b52-check1')"><div class="option-radio"></div>Ладно, может, я действительно всё преувеличиваю, давай забудем.</div>
+          <div class="option-item" onclick="selectRadioDeferred('q52-1','позиция',this,'q52-fb1',{'сдача':{'type':'correct','text':'Да. Это сдача позиции: говорящая отказывается от своей границы и обесценивает свой опыт.'},'позиция':{'type':'wrong','text':'Нет. Это не сдача, а сохранение позиции без нападения.'},'атака':{'type':'wrong','text':'Нет. Это атака и эскалация конфликта, но не сдача.'}},'b52-check1')"><div class="option-radio"></div>Я понимаю, что тебе неприятно это слышать, но для меня это важно, и я остаюсь при своём решении.</div>
+          <div class="option-item" onclick="selectRadioDeferred('q52-1','атака',this,'q52-fb1',{'сдача':{'type':'correct','text':'Да. Это сдача позиции: говорящая отказывается от своей границы и обесценивает свой опыт.'},'позиция':{'type':'wrong','text':'Нет. Это не сдача, а сохранение позиции без нападения.'},'атака':{'type':'wrong','text':'Нет. Это атака и эскалация конфликта, но не сдача.'}},'b52-check1')"><div class="option-radio"></div>Сам во всём виноват, ты меня уже довёл.</div>
         </div>
         <div id="q52-fb1" style="display:none;margin-top:12px"></div>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn btn-secondary" id="b52-check1" disabled onclick="showDeferredFeedback('b52-check1', revealB52Task2)">Проверить задание 1</button>
+        </div>
       </div>
       <div class="card" id="b52-task2" style="display:none">
         <div class="question-label" style="margin-bottom:14px">Задание 2. Какой ответ больше всего похож на <strong>сохранение позиции</strong>?</div>
         <div class="options-list" id="q52-2">
-          <div class="option-item" onclick="selectRadioCustomFeedback('q52-2','сдача',this,'q52-fb2',{'сдача':{'type':'wrong','text':'Нет. Это отказ от своей позиции ради снижения напряжения.'},'позиция':{'type':'correct','text':'Да. Здесь есть признание реакции другого, но нет отказа от собственной границы.'},'атака':{'type':'wrong','text':'Нет. Это нападение и усиление конфликта.'}}); revealB52After()"><div class="option-radio"></div>Ладно, забудем, не хочу ссориться.</div>
-          <div class="option-item" onclick="selectRadioCustomFeedback('q52-2','позиция',this,'q52-fb2',{'сдача':{'type':'wrong','text':'Нет. Это отказ от своей позиции ради снижения напряжения.'},'позиция':{'type':'correct','text':'Да. Здесь есть признание реакции другого, но нет отказа от собственной границы.'},'атака':{'type':'wrong','text':'Нет. Это нападение и усиление конфликта.'}}); revealB52After()"><div class="option-radio"></div>Я слышу, что ты злишься, но для меня это по-прежнему важно, и я не меняю своё решение.</div>
-          <div class="option-item" onclick="selectRadioCustomFeedback('q52-2','атака',this,'q52-fb2',{'сдача':{'type':'wrong','text':'Нет. Это отказ от своей позиции ради снижения напряжения.'},'позиция':{'type':'correct','text':'Да. Здесь есть признание реакции другого, но нет отказа от собственной границы.'},'атака':{'type':'wrong','text':'Нет. Это нападение и усиление конфликта.'}}); revealB52After()"><div class="option-radio"></div>Да как с тобой вообще можно разговаривать.</div>
+          <div class="option-item" onclick="selectRadioDeferred('q52-2','сдача',this,'q52-fb2',{'сдача':{'type':'wrong','text':'Нет. Это отказ от своей позиции ради снижения напряжения.'},'позиция':{'type':'correct','text':'Да. Здесь есть признание реакции другого, но нет отказа от собственной границы.'},'атака':{'type':'wrong','text':'Нет. Это нападение и усиление конфликта.'}},'b52-check2')"><div class="option-radio"></div>Ладно, забудем, не хочу ссориться.</div>
+          <div class="option-item" onclick="selectRadioDeferred('q52-2','позиция',this,'q52-fb2',{'сдача':{'type':'wrong','text':'Нет. Это отказ от своей позиции ради снижения напряжения.'},'позиция':{'type':'correct','text':'Да. Здесь есть признание реакции другого, но нет отказа от собственной границы.'},'атака':{'type':'wrong','text':'Нет. Это нападение и усиление конфликта.'}},'b52-check2')"><div class="option-radio"></div>Я слышу, что ты злишься, но для меня это по-прежнему важно, и я не меняю своё решение.</div>
+          <div class="option-item" onclick="selectRadioDeferred('q52-2','атака',this,'q52-fb2',{'сдача':{'type':'wrong','text':'Нет. Это отказ от своей позиции ради снижения напряжения.'},'позиция':{'type':'correct','text':'Да. Здесь есть признание реакции другого, но нет отказа от собственной границы.'},'атака':{'type':'wrong','text':'Нет. Это нападение и усиление конфликта.'}},'b52-check2')"><div class="option-radio"></div>Да как с тобой вообще можно разговаривать.</div>
         </div>
         <div id="q52-fb2" style="display:none;margin-top:12px"></div>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn btn-secondary" id="b52-check2" disabled onclick="showDeferredFeedback('b52-check2', revealB52After)">Проверить задание 2</button>
+        </div>
       </div>
       <div id="b52-after" style="display:none">
         <div class="feedback-box neutral" style="margin-top:16px">Важно не столько «победить» в разговоре, сколько не потерять себя в ответ на давление. Сохранение позиции помогает вам оставаться в контакте со своими чувствами и границами.</div>
@@ -2239,7 +2649,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <div id="b53-after" style="display:none">
           <div class="feedback-box neutral" style="margin-top:16px">В ответе вы не спорите о том, «кто прав». Вы возвращаетесь к себе: что происходит, как это влияет на вас и что вы для себя решили.</div>
           <div style="text-align:center;margin-top:16px">
-            <span onclick="showBreathing()" title="Нажми на меня" style="font-size:32px;cursor:pointer;display:inline-block;transition:transform 0.2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🍵</span>
+            <img src="https://i.ibb.co/wZytzLjH/cap.png" alt="" onclick="showBreathing()" title="Нажми на меня" style="height:60px;width:auto;cursor:pointer;display:inline-block;transition:transform 0.2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
           </div>
           <div class="btn-row">
             <button class="btn btn-primary" id="btn-b53" onclick="goBlock('b54')">Далее →</button>
@@ -2251,8 +2661,42 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
     <!-- БЛОК 5.4 -->
     <div class="block" id="b54">
       <h2 class="block-title">Мини-итог: удерживать себя в разговоре</h2>
-      <div class="card card-accent">
-        <p class="prose">В этом модуле вы потренировались различать три типа ответов: сдачу позиции, атаку и сохранение позиции. Сохранение позиции — это спокойное возвращение к своим чувствам, важности ситуации и границе.</p>
+
+      <style>
+        .b54-cols {
+          display: flex;
+          align-items: stretch;
+          gap: 24px;
+          margin-bottom: 20px;
+        }
+        .b54-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
+        .b54-text-col .card { flex: 1; }
+        .b54-img-col { flex: 1; min-width: 0; }
+        .b54-img-col img {
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+          border-radius: var(--radius);
+          border: 3px solid #5B8A6E;
+          box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+          .b54-cols { flex-direction: column; }
+          .b54-text-col { order: 1; }
+          .b54-img-col { width: 100%; order: 2; }
+          .b54-img-col img { height: auto; }
+        }
+      </style>
+
+      <div class="b54-cols">
+        <div class="b54-text-col">
+          <div class="card card-accent" style="margin-bottom:0">
+            <p class="prose">В этом модуле вы потренировались различать три типа ответов: сдачу позиции, атаку и сохранение позиции.</p>
+            <p class="prose" style="margin-bottom:0">Сохранение позиции — это спокойное возвращение к своим чувствам, важности ситуации и границе.</p>
+          </div>
+        </div>
+        <div class="b54-img-col">
+          <img src="https://i.ibb.co/CKSqLCGQ/Module-5.jpg" alt="Иллюстрация модуля 5">
+        </div>
       </div>
       <div class="card">
         <div class="question-block">
@@ -2435,6 +2879,11 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <h3 style="font-family:'Unbounded',sans-serif;font-size:16px;color:var(--primary);margin-bottom:20px">Ваш прогресс</h3>
         <div id="skill-bars"></div>
         <div id="skill-feedbacks"></div>
+        <div style="margin: 16px 0 24px">
+          <button class="btn btn-primary" onclick="downloadSkillResults()" style="gap:8px">
+            &#8595; Скачать результаты самооценки (PDF)
+          </button>
+        </div>
         <div class="module-complete" id="course-complete" style="display:none">
           <h2>Курс пройден!</h2>
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px">
@@ -2664,7 +3113,7 @@ function getAddictionKey() {
 const B14_DATA = {
   'Алкогольная': {
     sit1: {
-      desc: 'Близкий употреблял/пил на семейном празднике, повышал голос, говорил обидные слова.',
+      desc: 'Ситуация 1: Близкий употреблял/пил на семейном празднике, повышал голос, говорил обидные слова.',
       question: 'Какая из трёх фраз описывает поведение, а не даёт оценку или ярлык?',
       options: [
         {text:'Ты испортил нам весь праздник', correct:false, note:'Неверно. Оценка результата («испортил праздник»), нет конкретики, что именно делал.'},
@@ -2684,7 +3133,7 @@ const B14_DATA = {
   },
   'Игровая': {
     sit1: {
-      desc: 'Близкий обещал провести выходной день с семьёй, но вместо этого просидел за компьютером за играми с утра до самого вечера, не реагируя на ваши просьбы помочь.',
+      desc: 'Ситуация 1: Близкий обещал провести выходной день с семьёй, но вместо этого просидел за компьютером за играми с утра до самого вечера, не реагируя на ваши просьбы помочь.',
       question: 'Какая из трёх фраз описывает поведение, а не даёт оценку или ярлык?',
       options: [
         {text:'Ты испортил нам весь выходной', correct:false, note:'Неверно. Это ваша оценка результата («испортил выходной»), а не описание того, что конкретно сделал человек.'},
@@ -2704,7 +3153,7 @@ const B14_DATA = {
   },
   'Наркотическая': {
     sit1: {
-      desc: 'Близкий вернулся домой далеко за полночь, у него были расширены зрачки, он громко кричал, не реагировал на ваши слова и случайно разбил посуду в коридоре.',
+      desc: 'Ситуация 1: Близкий вернулся домой далеко за полночь, у него были расширены зрачки, он громко кричал, не реагировал на ваши слова и случайно разбил посуду в коридоре.',
       question: 'Какая из трёх фраз описывает поведение, а не даёт оценку или ярлык?',
       options: [
         {text:'Ты снова где-то обдолбался и устроил нам кошмар', correct:false, note:'Неверно. Здесь звучит обвинение и эмоциональная оценка происходящего («устроил кошмар»), а не объективное описание.'},
@@ -2796,51 +3245,81 @@ const B23_TABLES = {
 function initB23() {
   const key = getAddictionKey();
   const data = B23_TABLES[key];
-  const tbody = document.querySelector('#table-b23a tbody');
-  if (!tbody) return;
-  // Only re-render if not answered
-  if (state.answersModule2 && Object.keys(state.answersModule2).some(k => k.startsWith('table-b23a'))) return;
-  tbody.innerHTML = data.rows.map(r =>
-    `<tr data-correct="${r.correct}" data-fb='${JSON.stringify(r.fb).replace(/'/g,"&apos;")}'>
-      <td>${r.phrase}</td>
-      <td><select class="answer-select" onchange="checkDropdowns2('table-b23a','b23-check1')">
-        <option value="">— выберите —</option>
-        <option>Я-высказывание</option>
-        <option>Ты-высказывание</option>
-      </select></td>
-      <td class="fb-cell" style="display:none;font-size:13px"></td>
-    </tr>`
-  ).join('');
+  // Fill radio tbody
+  const radioTbody = document.querySelector('#table-b23a-radio-tbody');
+  if (radioTbody && radioTbody.children.length === 0) {
+    radioTbody.innerHTML = data.rows.map((r, i) =>
+      `<tr data-correct="${r.correct}" data-fb='${JSON.stringify(r.fb).replace(/'/g,"&apos;")}'>
+        <td>${r.phrase}</td>
+        <td style="text-align:center"><input type="radio" name="b23ar${i}" value="Я-высказывание" onchange="checkRadiosB23a(${data.rows.length})"></td>
+        <td style="text-align:center"><input type="radio" name="b23ar${i}" value="Ты-высказывание" onchange="checkRadiosB23a(${data.rows.length})"></td>
+      </tr>`
+    ).join('');
+  }
+  // Fill result tbody
+  const resultTbody = document.querySelector('#table-b23a tbody');
+  if (resultTbody && resultTbody.children.length === 0) {
+    resultTbody.innerHTML = data.rows.map(r =>
+      `<tr data-correct="${r.correct}" data-fb='${JSON.stringify(r.fb).replace(/'/g,"&apos;")}'>
+        <td>${r.phrase}</td>
+        <td class="b23a-chosen"></td>
+        <td class="fb-cell" style="font-size:13px"></td>
+      </tr>`
+    ).join('');
+  }
 }
 
-function revealB23a() {
+function revealB23a(choices) {
   const key = getAddictionKey();
   const data = B23_TABLES[key];
   const table = document.getElementById('table-b23a');
-  document.getElementById('th-b23a').style.display = '';
   const rows = table.querySelectorAll('tbody tr');
   rows.forEach((r, i) => {
-    const sel = r.querySelector('select');
+    const chosen = choices ? choices[i] : '';
     const correct = r.dataset.correct;
-    const chosen = sel ? sel.value : '';
-    // Read feedback from data-fb attribute (set by initB23) or fall back to B23_TABLES
     let fbText = '';
     if (r.dataset.fb) {
-      try {
-        const fbMap = JSON.parse(r.dataset.fb.replace(/&apos;/g, "'"));
-        fbText = fbMap[chosen] || '';
-      } catch(e) {}
+      try { const fbMap = JSON.parse(r.dataset.fb.replace(/&apos;/g, "'")); fbText = fbMap[chosen] || ''; } catch(e) {}
     }
-    if (!fbText && data.rows[i]) {
-      fbText = data.rows[i].fb[chosen] || '';
-    }
+    if (!fbText && data.rows[i]) fbText = data.rows[i].fb[chosen] || '';
     const isCorrect = chosen === correct;
     r.classList.add(isCorrect ? 'correct' : 'incorrect');
-    if (sel) sel.className = 'answer-select ' + (isCorrect ? 'correct-answer' : 'wrong-answer');
+    const chosenCell = r.querySelector('.b23a-chosen');
+    if (chosenCell) {
+      chosenCell.textContent = chosen;
+      chosenCell.style.fontWeight = '600';
+      chosenCell.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
+    }
     const fbCell = r.querySelector('.fb-cell');
-    if (fbCell) { fbCell.style.display = ''; fbCell.textContent = fbText; fbCell.className = 'fb-cell ' + (isCorrect ? 'feedback-correct' : 'feedback-wrong'); }
+    if (fbCell) { fbCell.textContent = fbText; fbCell.className = 'fb-cell ' + (isCorrect ? 'feedback-correct' : 'feedback-wrong'); }
   });
   completeBlock('b23'); unlockBlock('b24'); saveState();
+}
+
+function checkRadiosB23a(total) {
+  let allAnswered = true;
+  for (let i = 0; i < total; i++) {
+    const radios = document.querySelectorAll(`input[name="b23ar${i}"]`);
+    if (![...radios].some(r => r.checked)) { allAnswered = false; break; }
+  }
+  const btn = document.getElementById('b23-check1');
+  if (btn) btn.disabled = !allAnswered;
+}
+
+function submitB23aRadios() {
+  const radioTbody = document.querySelector('#table-b23a-radio-tbody');
+  const rowCount = radioTbody ? radioTbody.querySelectorAll('tr').length : 4;
+  const choices = [];
+  for (let i = 0; i < rowCount; i++) {
+    const radios = document.querySelectorAll(`input[name="b23ar${i}"]`);
+    let val = '';
+    radios.forEach(r => { if (r.checked) val = r.value; });
+    choices.push(val);
+  }
+  document.getElementById('table-b23a-radio-wrap').style.display = 'none';
+  document.getElementById('table-b23a-result-wrap').style.display = 'block';
+  revealB23a(choices);
+  showTask23b();
 }
 
 // ═══════════ BLOCK 1.2 DYNAMIC RENDER ═══════════
@@ -3008,6 +3487,7 @@ let state = {
   selectedReactions: [],
   initialSkillAssessment: { init1: null, init2: null, init3: null },
   finalSkillAssessment: { final1: null, final2: null, final3: null },
+  b52task1checked: false,
   answersModule1: {},
   answersModule2: {}
 };
@@ -3072,7 +3552,7 @@ function goBlock(id) {
   // Init personalized situations when entering b14
   if (id === 'b14') initB14();
   // Init personalized table when entering b23
-  if (id === 'b23') initB23();
+  if (id === 'b23') { initB23(); setTimeout(() => { syncFlashcardHeights(); fitFlashcardText(); }, 50); }
   // Init personalized constructor when entering b24
   if (id === 'b24') initB24();
   // Modules 3-6 inits
@@ -3244,6 +3724,37 @@ function selectRadioCustomFeedback(groupId, value, el, fbId, feedbackMap) {
   checkBlockCompletion();
 }
 
+function selectRadioDeferred(groupId, value, el, fbId, feedbackMap, btnId) {
+  // Only highlight — feedback shown on button click
+  document.querySelectorAll('#' + groupId + ' .option-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  // Store pending feedback on the fbEl as data attribute
+  const fbEl = document.getElementById(fbId);
+  if (fbEl) fbEl.dataset.pendingValue = value;
+  // Store feedbackMap on button
+  const btn = document.getElementById(btnId);
+  if (btn) { btn.disabled = false; btn.dataset.groupId = groupId; btn.dataset.fbId = fbId; btn.dataset.feedbackMap = JSON.stringify(feedbackMap); }
+  state.answersModule1[groupId] = value;
+  saveState();
+}
+
+function showDeferredFeedback(btnId, onAfter) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  const fbId = btn.dataset.fbId;
+  const groupId = btn.dataset.groupId;
+  const feedbackMap = JSON.parse(btn.dataset.feedbackMap || '{}');
+  const fbEl = document.getElementById(fbId);
+  const value = fbEl ? fbEl.dataset.pendingValue : (state.answersModule1[groupId] || '');
+  const fb = feedbackMap[value];
+  if (fbEl && fb) {
+    fbEl.style.display = 'block';
+    fbEl.innerHTML = `<div class="feedback-box ${fb.type === 'correct' ? 'correct' : 'wrong'}">${fb.text}</div>`;
+  }
+  btn.disabled = true;
+  if (onAfter) onAfter();
+}
+
 function selectRadioFeedback(groupId, value, el, fbId, typeMap) {
   // Already answered?
   if (document.querySelectorAll('#' + groupId + ' .option-item.selected').length > 0) return;
@@ -3358,9 +3869,112 @@ function enableAfterCheck22a() {
   document.getElementById('task22b-wrap').style.display = 'block';
 }
 
+function checkRadiosB22a() {
+  // Enable check button only when all 8 rows have a selection
+  var allAnswered = true;
+  for (var i = 0; i < 8; i++) {
+    var radios = document.querySelectorAll('input[name="b22r' + i + '"]');
+    var checked = false;
+    radios.forEach(function(r) { if (r.checked) checked = true; });
+    if (!checked) { allAnswered = false; break; }
+  }
+  var btn = document.getElementById('b22-check1');
+  if (btn) btn.disabled = !allAnswered;
+}
+
+function submitB22aRadios() {
+  var choices = [];
+  for (var i = 0; i < 8; i++) {
+    var radios = document.querySelectorAll('input[name="b22r' + i + '"]');
+    var val = '';
+    radios.forEach(function(r) { if (r.checked) val = r.value; });
+    choices.push(val);
+  }
+
+  // Hide radio table, show result table
+  document.getElementById('table-b22a-radio-wrap').style.display = 'none';
+  document.getElementById('table-b22a-result-wrap').style.display = 'block';
+
+  // Fill result table with chosen answers and feedback
+  var table = document.getElementById('table-b22a');
+  var rows = table.querySelectorAll('tbody tr');
+  rows.forEach(function(r, i) {
+    var chosen = choices[i] || '';
+    var correct = r.dataset.correct;
+    var isCorrect = chosen === correct;
+    var fbData = FEEDBACK_B22A[i] || {};
+    var fbText = fbData[chosen] || '';
+
+    r.classList.add(isCorrect ? 'correct' : 'incorrect');
+    var chosenCell = r.querySelector('.b22a-chosen');
+    if (chosenCell) {
+      chosenCell.textContent = chosen;
+      chosenCell.style.fontWeight = '600';
+      chosenCell.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
+    }
+    var fbCell = r.querySelector('.fb-cell');
+    if (fbCell) {
+      fbCell.textContent = fbText;
+      fbCell.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
+    }
+  });
+
+  enableAfterCheck22a();
+}
+
 function showAfterB22() {
   document.getElementById('after-b22').style.display = 'block';
   completeBlock('b22'); unlockBlock('b23'); saveState();
+}
+
+function checkRadiosB22b() {
+  var allAnswered = true;
+  for (var i = 0; i < 4; i++) {
+    var radios = document.querySelectorAll('input[name="b22br' + i + '"]');
+    var checked = false;
+    radios.forEach(function(r) { if (r.checked) checked = true; });
+    if (!checked) { allAnswered = false; break; }
+  }
+  var btn = document.getElementById('b22-check2');
+  if (btn) btn.disabled = !allAnswered;
+}
+
+function submitB22bRadios() {
+  var choices = [];
+  for (var i = 0; i < 4; i++) {
+    var radios = document.querySelectorAll('input[name="b22br' + i + '"]');
+    var val = '';
+    radios.forEach(function(r) { if (r.checked) val = r.value; });
+    choices.push(val);
+  }
+
+  document.getElementById('table-b22b-radio-wrap').style.display = 'none';
+  document.getElementById('table-b22b-result-wrap').style.display = 'block';
+
+  var table = document.getElementById('table-b22b');
+  var rows = table.querySelectorAll('tbody tr');
+  rows.forEach(function(r, i) {
+    var chosen = choices[i] || '';
+    var correct = r.dataset.correct;
+    var isCorrect = chosen === correct;
+    var fbData = FEEDBACK_B22B[i] || {};
+    var fbText = fbData[chosen] || '';
+
+    r.classList.add(isCorrect ? 'correct' : 'incorrect');
+    var chosenCell = r.querySelector('.b22b-chosen');
+    if (chosenCell) {
+      chosenCell.textContent = chosen;
+      chosenCell.style.fontWeight = '600';
+      chosenCell.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
+    }
+    var fbCell = r.querySelector('.fb-cell');
+    if (fbCell) {
+      fbCell.textContent = fbText;
+      fbCell.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
+    }
+  });
+
+  showAfterB22();
 }
 
 function showTask23b() {
@@ -3371,6 +3985,8 @@ function showAfterB25() {
   document.getElementById('after-b25').style.display = 'block';
   completeBlock('b25'); unlockBlock('b26'); saveState();
 }
+
+
 
 // ═══════════ CONSTRUCTOR ═══════════
 const constructorState = { c1: null, c2: null, c3: null };
@@ -3833,6 +4449,8 @@ function checkQ31Completion() {
 
 // B52 helpers
 function revealB52Task2() {
+  state.b52task1checked = true;
+  saveState();
   const card = document.getElementById('b52-task2');
   if (card && card.style.display === 'none') {
     card.style.display = 'block';
@@ -4162,13 +4780,17 @@ function initUI() {
   });
 
   // Restore sub-card visibility for blocks with sequential reveals
-  if (state.answersModule1['q52-1'] !== undefined) {
+  if (state.b52task1checked) {
     const t2 = document.getElementById('b52-task2');
     if (t2) t2.style.display = 'block';
+    const btn1 = document.getElementById('b52-check1');
+    if (btn1) btn1.disabled = false;
   }
   if (state.answersModule1['q52-2'] !== undefined) {
     const af = document.getElementById('b52-after');
     if (af) af.style.display = 'block';
+    const btn2 = document.getElementById('b52-check2');
+    if (btn2) btn2.disabled = false;
   }
 
   // Collapse all nav sections — goBlock will open the correct one
@@ -4405,7 +5027,176 @@ function closeBreathing() {
 }
 // ═════════════════════════════════════
 
-document.addEventListener('DOMContentLoaded', initUI);
+// ═══════════ DOWNLOAD SKILL RESULTS (PDF) ═══════════
+function downloadSkillResults() {
+  var ia = state.initialSkillAssessment;
+  var fa = state.finalSkillAssessment;
+
+  var skills = [
+    { label: 'Говорить фактами, без «ты всегда / ты никогда»', initKey: 'init1', finalKey: 'final1' },
+    { label: 'Говорить о своих чувствах', initKey: 'init2', finalKey: 'final2' },
+    { label: 'Обозначать свои границы',   initKey: 'init3', finalKey: 'final3' }
+  ];
+
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  // Build skill rows HTML
+  var skillRows = '';
+  skills.forEach(function(s, idx) {
+    var before = ia[s.initKey] != null ? ia[s.initKey] : 0;
+    var after  = fa[s.finalKey] != null ? fa[s.finalKey] : 0;
+    var diff   = after - before;
+    var badgeBg = diff > 0 ? '#5b8a6e' : diff < 0 ? '#c0392b' : '#6b7280';
+    var badgeText = diff > 0 ? ('+' + diff + ' балл(а)') : diff < 0 ? (diff + ' балл(а)') : 'без изменений';
+    var comment = diff <= 0
+      ? 'Пока не чувствуешь большого прогресса — или стала оценивать себя строже. Продолжай практиковаться в безопасных ситуациях.'
+      : after < 8
+        ? 'Уже видишь изменения. Навык ещё не автоматический, но ты замечаешь рост. Продолжай опираться на формулы курса.'
+        : 'Видишь у себя достаточно сильный навык. Практикуй его не только в тяжёлых, но и в нейтральных ситуациях.';
+
+    skillRows += '<div style="background:#ffffff;border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;border:1px solid #e5e0d8">'
+      + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">'
+      + '<div style="width:34px;height:34px;border-radius:50%;background:#2d4a7a;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + (idx+1) + '</div>'
+      + '<div style="font-size:16px;font-weight:700;color:#2a2a2a;flex:1">' + s.label + '</div>'
+      + '<div style="background:' + badgeBg + ';color:#fff;font-size:13px;font-weight:700;border-radius:6px;padding:5px 14px;white-space:nowrap">' + badgeText + '</div>'
+      + '</div>'
+      + '<div style="margin-bottom:8px">'
+      + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
+      + '<span style="font-size:13px;color:#6b7280;width:90px;flex-shrink:0">До курса</span>'
+      + '<div style="flex:1;background:#e0e0e0;border-radius:4px;height:12px"><div style="width:' + (before*10) + '%;background:#b8c9e0;border-radius:4px;height:12px"></div></div>'
+      + '<span style="font-size:14px;font-weight:700;color:#6b7280;width:38px;text-align:right">' + before + '/10</span>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:10px">'
+      + '<span style="font-size:13px;color:#5b8a6e;width:90px;flex-shrink:0">После курса</span>'
+      + '<div style="flex:1;background:#e0e0e0;border-radius:4px;height:12px"><div style="width:' + (after*10) + '%;background:#5b8a6e;border-radius:4px;height:12px"></div></div>'
+      + '<span style="font-size:14px;font-weight:700;color:#5b8a6e;width:38px;text-align:right">' + after + '/10</span>'
+      + '</div>'
+      + '</div>'
+      + '<div style="font-size:13px;color:#2a2a2a;margin-top:12px;line-height:1.7;border-top:1px solid #e5e0d8;padding-top:10px">' + comment + '</div>'
+      + '</div>';
+  });
+
+  var totalBefore = skills.reduce(function(s,k){ return s + (ia[k.initKey]||0); }, 0);
+  var totalAfter  = skills.reduce(function(s,k){ return s + (fa[k.finalKey]||0); }, 0);
+  var totalDiff   = totalAfter - totalBefore;
+  var totalLabel  = (totalDiff >= 0 ? '+' : '') + totalDiff + ' балл(а) — общий прогресс';
+
+  var html = '<div id="pdf-render" style="width:794px;height:1123px;background:#ffffff;font-family:Arial,sans-serif;padding:0;display:flex;flex-direction:column;box-sizing:border-box">'
+    // Header
+    + '<div style="background:#2d4a7a;padding:32px 40px 28px;flex-shrink:0">'
+    + '<div style="font-size:26px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.3px">Результаты самооценки навыков</div>'
+    + '<div style="font-size:14px;color:#b4c8e8">Курс «Говорить так, чтобы тебя услышали»&nbsp;&nbsp;•&nbsp;&nbsp;' + dateStr + '</div>'
+    + '</div>'
+    // Content
+    + '<div style="padding:24px 40px 0;background:#ffffff;flex:1;display:flex;flex-direction:column;justify-content:space-between">'
+    + '<div>' + skillRows + '</div>'
+    // Summary
+    + '<div>'
+    + '<div style="border-top:2px solid #5b8a6e;margin-bottom:20px"></div>'
+    + '<div style="background:#2d4a7a;border-radius:12px;padding:22px 28px;display:flex;align-items:center;justify-content:space-between">'
+    + '<div style="font-size:17px;font-weight:700;color:#fff">Итоговый результат</div>'
+    + '<div style="font-size:14px;color:#b4c8e8">До курса:&nbsp;<b style=\"color:#fff\">' + totalBefore + '&thinsp;/&thinsp;30</b>&emsp;После курса:&nbsp;<b style=\"color:#fff\">' + totalAfter + '&thinsp;/&thinsp;30</b></div>'
+    + '<div style="font-size:15px;font-weight:700;color:#a8e6c0">' + totalLabel + '</div>'
+    + '</div>'
+    + '</div>'
+    + '</div>'
+    // Footer
+    + '<div style="border-top:1px solid #e0e0e0;padding:12px 40px;display:flex;justify-content:space-between;flex-shrink:0">'
+    + '<span style="font-size:11px;color:#9ca3af">Курс «Говорить так, чтобы тебя услышали»</span>'
+    + '<span style="font-size:11px;color:#9ca3af">' + dateStr + '</span>'
+    + '</div>'
+    + '</div>';
+
+  // Inject hidden container
+  var container = document.createElement('div');
+  container.style.cssText = 'position:fixed;left:-9999px;top:0;z-index:-1';
+  container.innerHTML = html;
+  document.body.appendChild(container);
+
+  var btn = document.querySelector('[onclick="downloadSkillResults()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Формируется PDF...'; }
+
+  html2canvas(container.querySelector('#pdf-render'), {
+    scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false,
+    width: 794, height: 1123
+  }).then(function(canvas) {
+    document.body.removeChild(container);
+    var imgData = canvas.toDataURL('image/png');
+    var { jsPDF } = window.jspdf;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    // Fill entire A4 page exactly
+    doc.addImage(imgData, 'PNG', 0, 0, 210, 297);
+    doc.save('Результаты самооценки.pdf');
+    if (btn) { btn.disabled = false; btn.innerHTML = '&#8595; Скачать результаты самооценки (PDF)'; }
+    // Scroll to bottom of the page
+    setTimeout(function() {
+      var footer = document.getElementById('easter-footer');
+      if (footer) footer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      else window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }, 300);
+  }).catch(function(e) {
+    document.body.removeChild(container);
+    if (btn) { btn.disabled = false; btn.innerHTML = '&#8595; Скачать результаты самооценки (PDF)'; }
+    alert('Ошибка при создании PDF: ' + e.message);
+  });
+}
+// ═══════════════════════════════════════
+
+function fitEl(el, availW) {
+  el.style.fontSize = '';
+  let lo = 7, hi = 42;
+  while (lo < hi - 0.5) {
+    const mid = (lo + hi) / 2;
+    el.style.fontSize = mid + 'px';
+    if (el.scrollWidth <= availW) lo = mid; else hi = mid;
+  }
+  el.style.fontSize = lo + 'px';
+  return lo;
+}
+function fitFlashcardText() {
+  // fc-line: same size across ALL cards (use min that fits all)
+  const allLines = document.querySelectorAll('.flashcard-back p.fc-line');
+  let minLineSize = 999;
+  allLines.forEach(el => {
+    const back = el.closest('.flashcard-back');
+    const availW = back.offsetWidth * 0.8;
+    if (availW <= 0) return;
+    const sz = fitEl(el, availW);
+    if (sz < minLineSize) minLineSize = sz;
+  });
+  allLines.forEach(el => el.style.fontSize = minLineSize + 'px');
+
+  // fc-footer: fixed readable size, no fit-to-width
+  const footers = document.querySelectorAll('.flashcard-back p.fc-footer');
+  footers.forEach(el => { el.style.fontSize = ''; el.style.whiteSpace = 'normal'; });
+}
+function syncFlashcardHeights() {
+  document.querySelectorAll('.flashcard').forEach(card => {
+    const front = card.querySelector('.flashcard-front');
+    const inner = card.querySelector('.flashcard-inner');
+    if (front && inner) {
+      const h = front.offsetHeight + 'px';
+      inner.style.height = h;
+      card.style.height = h;
+    }
+  });
+}
+
+function syncAndFit() {
+  syncFlashcardHeights();
+  fitFlashcardText();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initUI();
+  const imgs = document.querySelectorAll('.flashcard-front img');
+  let loaded = 0;
+  const sync = () => { loaded++; if (loaded >= imgs.length) { syncFlashcardHeights(); fitFlashcardText(); } };
+  if (imgs.length === 0) { syncFlashcardHeights(); fitFlashcardText(); }
+  else { imgs.forEach(img => { if (img.complete) sync(); else img.addEventListener('load', sync); }); }
+  window.addEventListener('resize', () => { syncFlashcardHeights(); fitFlashcardText(); });
+});
 </script>
 
 <!-- EASTER EGG POPUPS -->
