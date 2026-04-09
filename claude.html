@@ -920,13 +920,12 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 /* ══════════════════════════════════════════ */
 
 /* === MOBILE RADIO TABLE === */
+.radio-table-mobile { display: none; padding: 0 0 4px; }
 @media (max-width: 600px) {
   table.radio-table { display: none !important; }
+  .radio-table-mobile { display: block !important; }
+  .mobile-video-hint { display: none !important; }
 }
-@media (min-width: 601px) {
-  .radio-table-mobile { display: none !important; }
-}
-.radio-table-mobile { padding: 0 0 4px; }
 .radio-mobile-row {
   display: flex; flex-direction: column;
   padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 8px;
@@ -2018,7 +2017,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         <!-- Таблица с радиокнопками (до проверки) -->
         <div id="table-b23a-radio-wrap">
           <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
-          <table class="exercise-table" style="table-layout:fixed;width:100%">
+          <table class="exercise-table radio-table" style="table-layout:fixed;width:100%">
             <colgroup><col><col style="width:145px"><col style="width:160px"></colgroup>
             <thead><tr>
               <th>Фраза</th>
@@ -2027,6 +2026,7 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
             </tr></thead>
             <tbody id="table-b23a-radio-tbody"></tbody>
           </table>
+          <div class="radio-table-mobile" id="table-b23a-mobile"></div>
           <div style="padding:12px 20px">
             <button class="btn btn-secondary" id="b23-check1" disabled onclick="submitB23aRadios()">Проверить</button>
           </div>
@@ -3286,15 +3286,29 @@ const B23_TABLES = {
 function initB23() {
   const key = getAddictionKey();
   const data = B23_TABLES[key];
-  // Fill radio tbody
+  const n = data.rows.length;
+  // Fill radio tbody (desktop)
   const radioTbody = document.querySelector('#table-b23a-radio-tbody');
   if (radioTbody && radioTbody.children.length === 0) {
     radioTbody.innerHTML = data.rows.map((r, i) =>
       `<tr data-correct="${r.correct}" data-fb='${JSON.stringify(r.fb).replace(/'/g,"&apos;")}'>
         <td>${r.phrase}</td>
-        <td style="text-align:center"><input type="radio" name="b23ar${i}" value="Я-высказывание" onchange="checkRadiosB23a(${data.rows.length})"></td>
-        <td style="text-align:center"><input type="radio" name="b23ar${i}" value="Ты-высказывание" onchange="checkRadiosB23a(${data.rows.length})"></td>
+        <td style="text-align:center"><input type="radio" name="b23ar${i}" value="Я-высказывание" onchange="checkRadiosB23a(${n})"></td>
+        <td style="text-align:center"><input type="radio" name="b23ar${i}" value="Ты-высказывание" onchange="checkRadiosB23a(${n})"></td>
       </tr>`
+    ).join('');
+  }
+  // Fill mobile version
+  const mobileWrap = document.querySelector('#table-b23a-mobile');
+  if (mobileWrap && mobileWrap.children.length === 0) {
+    mobileWrap.innerHTML = data.rows.map((r, i) =>
+      `<div class="radio-mobile-row">
+        <div class="radio-mobile-phrase">${r.phrase}</div>
+        <div class="radio-mobile-btns">
+          <button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b23ar${i}','Я-высказывание','checkRadiosB23a_mobile')">Я-высказывание</button>
+          <button class="radio-mobile-btn" onclick="mobileRadioPick(this,'b23ar${i}','Ты-высказывание','checkRadiosB23a_mobile')">Ты-высказывание</button>
+        </div>
+      </div>`
     ).join('');
   }
   // Fill result tbody
@@ -3308,6 +3322,13 @@ function initB23() {
       </tr>`
     ).join('');
   }
+}
+
+// Mobile proxy — reads total from current tbody
+function checkRadiosB23a_mobile() {
+  const n = document.querySelector('#table-b23a-radio-tbody') ?
+    document.querySelector('#table-b23a-radio-tbody').querySelectorAll('tr').length : 4;
+  checkRadiosB23a(n);
 }
 
 function revealB23a(choices) {
