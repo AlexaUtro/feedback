@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Говорить так, чтобы тебя услышали</title>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -40,6 +40,8 @@ body {
   color: var(--text);
   min-height: 100vh;
   display: flex;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* === SIDEBAR === */
@@ -354,8 +356,10 @@ body {
   cursor: pointer;
   transition: all 0.15s;
   background: var(--surface);
-  font-size: 14px !important;
-  line-height: 1.5;
+  font-size: 15px !important;
+  line-height: 1.6;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 .option-item:hover { border-color: var(--primary); background: var(--primary-light); }
 .option-item.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 600; }
