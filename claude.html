@@ -1474,49 +1474,49 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
             <tr>
               <th>Фраза</th>
               <th>Ваш выбор</th>
-              <th id="th-b12-fb" style="display:none">Пояснение</th>
+              <th id="th-b12-fb">Пояснение</th>
             </tr>
           </thead>
           <tbody>
             <tr data-correct="факт">
               <td>Ты пришёл домой с сильным запахом алкоголя</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
             <tr data-correct="ярлык">
               <td>Ты безнадёжный алкоголик</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
             <tr data-correct="оценка">
               <td>Ты опять вёл себя ужасно</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
             <tr data-correct="факт">
               <td>Ты пришёл в 23:30, хотя мы договаривались на 20:00</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
             <tr data-correct="оценка">
               <td>Ты всегда думаешь только о себе</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
             <tr data-correct="факт">
               <td>Ты сорвал обещание прийти трезвым на семейный ужин</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
             <tr data-correct="ярлык">
               <td>Ты ведёшь себя как эгоист</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
             <tr data-correct="факт">
               <td>Ты снова пришёл домой пьяным после полуночи</td>
               <td><select class="answer-select" onchange="checkDropdowns('table-b12','btn-b12')"><option value="">— выберите —</option><option value="факт">Факт</option><option value="оценка">Оценка</option><option value="ярлык">Ярлык/диагноз</option></select></td>
-              <td class="fb-cell" style="display:none;font-size:13px"></td>
+              <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
             </tr>
           </tbody>
         </table>
@@ -1626,12 +1626,10 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         .b15-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
         .b15-text-col .card { flex: 1; }
         .b15-img-col { flex: 1; min-width: 0; }
+        .b15-img-col { display: flex; flex-direction: column; }
         .b15-img-col img {
           width: 100%; height: 100%;
           object-fit: cover; display: block;
-          border-radius: var(--radius);
-          border: 3px solid #5B8A6E;
-          box-sizing: border-box;
         }
         @media (max-width: 600px) {
           .b15-cols { flex-direction: column; }
@@ -1650,7 +1648,9 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           </div>
         </div>
         <div class="b15-img-col" id="b15-img-col">
-          <img src="https://i.ibb.co/WN9b2h4z/Module-1.png" alt="Иллюстрация модуля 1" id="b15-img">
+          <div class="card" style="margin-bottom:0;padding:0;overflow:hidden;height:100%">
+            <img src="https://i.ibb.co/WN9b2h4z/Module-1.png" alt="Иллюстрация модуля 1" id="b15-img" style="width:100%;height:100%;display:block;object-fit:cover;">
+          </div>
         </div>
       </div>
 
@@ -1694,8 +1694,36 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
 
       <div class="prose">В прошлом модуле мы учились отделять факты от оценок и ярлыков. Следующий шаг — научиться говорить не только о том, что делает другой, но и о том, что происходит с вами.</div>
 
-      <div class="img-text-grid">
-        <div class="card" style="margin-bottom:0">
+      <style>
+        .b21-top {
+          display: flex;
+          align-items: flex-start;
+          gap: 20px;
+          margin-bottom: 20px;
+        }
+        .b21-text-col {
+          flex: 1;
+          min-width: 0;
+        }
+        .b21-img-col {
+          flex-shrink: 0;
+          width: 0; /* set by JS */
+        }
+        .b21-img-col img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: cover;
+          border-radius: var(--radius);
+        }
+        @media (max-width: 640px) {
+          .b21-top { flex-direction: column; }
+          .b21-img-col { width: 100% !important; height: 200px !important; }
+        }
+      </style>
+
+      <div class="b21-top" id="b21-top">
+        <div class="card b21-text-col" style="margin-bottom:0">
           <p class="prose">Язык заботы о себе — это когда вы говорите:</p>
           <ul class="prose" style="padding-left:24px">
             <li>что со мной происходит;</li>
@@ -1703,17 +1731,57 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
             <li>что для меня важно;</li>
           </ul>
           <p class="prose" style="margin-top:12px">а не только «ты опять...», «ты должен...».</p>
-
-          <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
-            <div class="feedback-box wrong" style="margin:0"><strong>Было:</strong><br>«Ты опять пришёл пьяный, тебе всё равно на семью»</div>
-            <div class="feedback-box correct" style="margin:0"><strong>Стало:</strong><br>«Когда ты приходишь пьяным, я чувствую тревогу и усталость, потому что мне важно чувствовать себя в безопасности дома»</div>
-          </div>
         </div>
-
-        <div class="card" style="margin-bottom:0;padding:0;overflow:hidden">
-          <img src="https://i.ibb.co/4n36MfT6/you-me.jpg" alt="Я и Ты" style="width:100%;height:100%;display:block;object-fit:cover;" onerror="this.parentElement.style.display='none'">
+        <div class="b21-img-col" id="b21-img-col">
+          <img src="https://i.ibb.co/4n36MfT6/you-me.jpg" alt="Я и Ты" id="b21-img" onerror="this.parentElement.style.display='none'">
         </div>
       </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="feedback-box wrong" style="margin:0"><strong>Было:</strong><br>«Ты опять пришёл пьяный, тебе всё равно на семью»</div>
+          <div class="feedback-box correct" style="margin:0"><strong>Стало:</strong><br>«Когда ты приходишь пьяным, я чувствую тревогу и усталость, потому что мне важно чувствовать себя в безопасности дома»</div>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          function sizeB21() {
+            var top = document.getElementById('b21-top');
+            var imgCol = document.getElementById('b21-img-col');
+            if (!top || !imgCol || window.innerWidth <= 640) return;
+            var textCol = top.querySelector('.b21-text-col');
+            var h = textCol ? textCol.offsetHeight : 0;
+            if (h > 0) {
+              imgCol.style.width = h + 'px';
+              imgCol.style.height = h + 'px';
+            }
+          }
+          // Retry until height is available
+          function sizeB21WithRetry(attempts) {
+            attempts = attempts || 0;
+            var textCol = document.querySelector('.b21-text-col');
+            var h = textCol ? textCol.offsetHeight : 0;
+            if (h > 0) { sizeB21(); return; }
+            if (attempts < 20) setTimeout(function() { sizeB21WithRetry(attempts + 1); }, 80);
+          }
+          window.sizeB21Retry = sizeB21WithRetry;
+          document.addEventListener('DOMContentLoaded', function() {
+            sizeB21WithRetry();
+          });
+          window.addEventListener('resize', sizeB21);
+          // Patch goBlock to re-run sizing when b21 becomes visible
+          document.addEventListener('DOMContentLoaded', function() {
+            var orig = window.goBlock;
+            if (orig) {
+              window.goBlock = function(id) {
+                orig(id);
+                if (id === 'b21') setTimeout(sizeB21WithRetry, 50);
+              };
+            }
+          });
+        })();
+      </script>
 
       <div class="card">
         <p class="prose" style="margin-bottom:0">Частая ошибка — говорить в основном про другого («ты», «он», «они») и почти <span id="easter-m2-text" class="easter-trigger" onclick="triggerM2()" title="Нажми на меня">не замечать себя</span>. Мы не запрещаем эмоции и обиду, мы учимся добавлять «Я»: «я злюсь», «мне больно», «мне страшно», «мне важно…».</p>
@@ -2123,12 +2191,12 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       <div class="card" style="padding:0;overflow:hidden">
         <div style="padding:16px 20px;font-weight:600;font-size:15px;border-bottom:1px solid var(--border)">Чувство или оценка о другом?</div>
         <table class="exercise-table" id="table-b25" style="table-layout:fixed;width:100%"><colgroup><col><col style="width:160px"><col></colgroup>
-          <thead><tr><th>Фраза</th><th>Ваш выбор</th><th id="th-b25" style="display:none">Пояснение</th></tr></thead>
+          <thead><tr><th>Фраза</th><th>Ваш выбор</th><th id="th-b25">Пояснение</th></tr></thead>
           <tbody>
-            <tr data-correct="Оценка о другом"><td>Я чувствую, что ты меня не уважаешь</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Чувство"><td>Я чувствую тревогу и бессилие</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Оценка о другом"><td>Я чувствую, что ты плохой человек</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Чувство"><td>Я чувствую злость и усталость</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
+            <tr data-correct="Оценка о другом"><td>Я чувствую, что ты меня не уважаешь</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Чувство"><td>Я чувствую тревогу и бессилие</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Оценка о другом"><td>Я чувствую, что ты плохой человек</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Чувство"><td>Я чувствую злость и усталость</td><td><select class="answer-select" onchange="checkDropdowns2('table-b25','b25-check')"><option value="">— выберите —</option><option>Чувство</option><option>Оценка о другом</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
           </tbody>
         </table>
         <div style="padding:12px 20px">
@@ -2160,12 +2228,10 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         .b26-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
         .b26-text-col .card { flex: 1; }
         .b26-img-col { flex: 1; min-width: 0; }
+        .b26-img-col { display: flex; flex-direction: column; }
         .b26-img-col img {
           width: 100%; height: 100%;
           object-fit: cover; display: block;
-          border-radius: var(--radius);
-          border: 3px solid #5B8A6E;
-          box-sizing: border-box;
         }
         @media (max-width: 600px) {
           .b26-cols { flex-direction: column; }
@@ -2188,7 +2254,9 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           </div>
         </div>
         <div class="b26-img-col" id="b26-img-col">
-          <img src="https://i.ibb.co/Nh590bv/Module-2.png" alt="Иллюстрация модуля 2" id="b26-img">
+          <div class="card" style="margin-bottom:0;padding:0;overflow:hidden;height:100%">
+            <img src="https://i.ibb.co/Nh590bv/Module-2.png" alt="Иллюстрация модуля 2" id="b26-img" style="width:100%;height:100%;display:block;object-fit:cover;">
+          </div>
         </div>
       </div>
 
@@ -2377,12 +2445,10 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         .b34-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
         .b34-text-col .card { flex: 1; }
         .b34-img-col { flex: 1; min-width: 0; }
+        .b34-img-col { display: flex; flex-direction: column; }
         .b34-img-col img {
           width: 100%; height: 100%;
           object-fit: cover; display: block;
-          border-radius: var(--radius);
-          border: 3px solid #5B8A6E;
-          box-sizing: border-box;
         }
         @media (max-width: 600px) {
           .b34-cols { flex-direction: column; }
@@ -2405,7 +2471,9 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           </div>
         </div>
         <div class="b34-img-col">
-          <img src="https://i.ibb.co/YCryW7x/Module-3.png" alt="Иллюстрация модуля 3">
+          <div class="card" style="margin-bottom:0;padding:0;overflow:hidden;height:100%">
+            <img src="https://i.ibb.co/YCryW7x/Module-3.png" alt="Иллюстрация модуля 3" style="width:100%;height:100%;display:block;object-fit:cover;">
+          </div>
         </div>
       </div>
       <div class="card">
@@ -2489,14 +2557,14 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
       <p class="mobile-video-hint">📱 При просмотре на мобильном разверните устройство в горизонтальное положение.</p>
         <table class="exercise-table" id="table-b42" style="table-layout:fixed;width:100%">
           <colgroup><col><col style="width:160px"><col></colgroup>
-          <thead><tr><th>Фраза</th><th>Ваш ответ</th><th id="th-b42" style="display:none">Пояснение</th></tr></thead>
+          <thead><tr><th>Фраза</th><th>Ваш ответ</th><th id="th-b42">Пояснение</th></tr></thead>
           <tbody>
-            <tr data-correct="Граница"><td>Я больше не буду давать тебе деньги на закрытие твоих кредитов.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Угроза"><td>Ещё раз придёшь в таком виде — выгоню на улицу навсегда!</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Жалоба"><td>Я не могу больше терпеть это отношение, ты просто высасываешь из меня все силы.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Граница"><td>Я буду уходить в другую комнату каждый раз, когда ты начинаешь на меня кричать.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Жалоба"><td>Ты испортил мне всю жизнь, сколько можно это терпеть?</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
-            <tr data-correct="Угроза"><td>Если ты сейчас же не извинишься, я всем расскажу, что ты натворил.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="display:none;font-size:13px"></td></tr>
+            <tr data-correct="Граница"><td>Я больше не буду давать тебе деньги на закрытие твоих кредитов.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Угроза"><td>Ещё раз придёшь в таком виде — выгоню на улицу навсегда!</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Жалоба"><td>Я не могу больше терпеть это отношение, ты просто высасываешь из меня все силы.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Граница"><td>Я буду уходить в другую комнату каждый раз, когда ты начинаешь на меня кричать.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Жалоба"><td>Ты испортил мне всю жизнь, сколько можно это терпеть?</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
+            <tr data-correct="Угроза"><td>Если ты сейчас же не извинишься, я всем расскажу, что ты натворил.</td><td><select class="answer-select" onchange="checkDropdowns('table-b42','btn-b42-check')"><option value="">— выберите —</option><option>Граница</option><option>Угроза</option><option>Жалоба</option></select></td><td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td></tr>
           </tbody>
         </table>
         <div style="padding:12px 20px">
@@ -2544,12 +2612,10 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         .b44-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
         .b44-text-col .card { flex: 1; }
         .b44-img-col { flex: 1; min-width: 0; }
+        .b44-img-col { display: flex; flex-direction: column; }
         .b44-img-col img {
           width: 100%; height: 100%;
           object-fit: cover; display: block;
-          border-radius: var(--radius);
-          border: 3px solid #5B8A6E;
-          box-sizing: border-box;
         }
         @media (max-width: 600px) {
           .b44-cols { flex-direction: column; }
@@ -2566,7 +2632,9 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           </div>
         </div>
         <div class="b44-img-col">
-          <img src="https://i.ibb.co/VrhVTxQ/Module-4.png" alt="Иллюстрация модуля 4">
+          <div class="card" style="margin-bottom:0;padding:0;overflow:hidden;height:100%">
+            <img src="https://i.ibb.co/VrhVTxQ/Module-4.png" alt="Иллюстрация модуля 4" style="width:100%;height:100%;display:block;object-fit:cover;">
+          </div>
         </div>
       </div>
       <div class="card">
@@ -2717,12 +2785,10 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
         .b54-text-col { flex: 2; min-width: 0; display: flex; flex-direction: column; }
         .b54-text-col .card { flex: 1; }
         .b54-img-col { flex: 1; min-width: 0; }
+        .b54-img-col { display: flex; flex-direction: column; }
         .b54-img-col img {
           width: 100%; height: 100%;
           object-fit: cover; display: block;
-          border-radius: var(--radius);
-          border: 3px solid #5B8A6E;
-          box-sizing: border-box;
         }
         @media (max-width: 600px) {
           .b54-cols { flex-direction: column; }
@@ -2740,7 +2806,9 @@ select.wrong-answer { border-color: var(--danger); background: var(--danger-bg);
           </div>
         </div>
         <div class="b54-img-col">
-          <img src="https://i.ibb.co/CKSqLCGQ/Module-5.jpg" alt="Иллюстрация модуля 5">
+          <div class="card" style="margin-bottom:0;padding:0;overflow:hidden;height:100%">
+            <img src="https://i.ibb.co/CKSqLCGQ/Module-5.jpg" alt="Иллюстрация модуля 5" style="width:100%;height:100%;display:block;object-fit:cover;">
+          </div>
         </div>
       </div>
       <div class="card">
@@ -3382,6 +3450,9 @@ function submitB23aRadios() {
     radios.forEach(r => { if (r.checked) val = r.value; });
     choices.push(val);
   }
+  // Save choices for restore after page reload
+  state.b23aChoices = choices;
+  saveState();
   document.getElementById('table-b23a-radio-wrap').style.display = 'none';
   document.getElementById('table-b23a-result-wrap').style.display = 'block';
   revealB23a(choices);
@@ -3403,7 +3474,7 @@ function initB12() {
         <option value="оценка">Оценка</option>
         <option value="ярлык">Ярлык/диагноз</option>
       </select></td>
-      <td class="fb-cell" style="display:none;font-size:13px"></td>
+      <td class="fb-cell" style="font-size:13px;color:var(--text-muted)"></td>
     </tr>`
   ).join('');
   // Reset button
@@ -3417,7 +3488,6 @@ function revealB12Feedback() {
   const key = getAddictionKey();
   const data = B12_DATA[key];
   const table = document.getElementById('table-b12');
-  document.getElementById('th-b12-fb').style.display = '';
   const rows = table.querySelectorAll('tbody tr');
   rows.forEach((r, i) => {
     const sel = r.querySelector('select');
@@ -3429,7 +3499,7 @@ function revealB12Feedback() {
     r.classList.add(isCorrect ? 'correct' : 'incorrect');
     if (sel) sel.className = 'answer-select ' + (isCorrect ? 'correct-answer' : 'wrong-answer');
     const fbCell = r.querySelector('.fb-cell');
-    if (fbCell) { fbCell.style.display = ''; fbCell.textContent = fbText; fbCell.className = 'fb-cell ' + (isCorrect ? 'feedback-correct' : 'feedback-wrong'); }
+    if (fbCell) { fbCell.textContent = fbText; fbCell.className = 'fb-cell ' + (isCorrect ? 'feedback-correct' : 'feedback-wrong'); }
   });
   document.getElementById('after-b12').style.display = 'block';
   document.getElementById('btn-b12').disabled = false;
@@ -3554,6 +3624,7 @@ let state = {
   initialSkillAssessment: { init1: null, init2: null, init3: null },
   finalSkillAssessment: { final1: null, final2: null, final3: null },
   b52task1checked: false,
+  b23aChoices: null,
   answersModule1: {},
   answersModule2: {}
 };
@@ -3617,6 +3688,7 @@ function goBlock(id) {
   if (id === 'b13') initB13();
   // Init personalized situations when entering b14
   if (id === 'b14') initB14();
+  if (id === 'b21') setTimeout(function(){ if(window.sizeB21Retry) window.sizeB21Retry(); }, 80);
   // Init personalized table when entering b23
   if (id === 'b23') { initB23(); setTimeout(() => { syncFlashcardHeights(); fitFlashcardText(); }, 50); }
   // Init personalized constructor when entering b24
@@ -4870,6 +4942,16 @@ function initUI() {
     if (af) af.style.display = 'block';
     const btn2 = document.getElementById('b52-check2');
     if (btn2) btn2.disabled = false;
+  }
+
+  // Restore b23a result table if already checked
+  if (state.b23aChoices && state.b23aChoices.length > 0) {
+    initB23();
+    const radioWrap = document.getElementById('table-b23a-radio-wrap');
+    const resultWrap = document.getElementById('table-b23a-result-wrap');
+    if (radioWrap) radioWrap.style.display = 'none';
+    if (resultWrap) resultWrap.style.display = 'block';
+    revealB23a(state.b23aChoices);
   }
 
   // Collapse all nav sections — goBlock will open the correct one
